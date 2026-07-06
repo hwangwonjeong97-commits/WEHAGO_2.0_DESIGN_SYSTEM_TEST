@@ -1857,37 +1857,27 @@ const CompanyChip = () => (
 )
 
 const PillChevron = () => (
-  <svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
     <path d="M1.64742 4.75355C1.45216 4.55829 1.45216 4.24178 1.64742 4.04652C1.84269 3.85126 2.15919 3.85126 2.35445 4.04652L6.00094 7.693L9.64742 4.04652C9.84268 3.85126 10.1592 3.85126 10.3545 4.04652C10.5497 4.24179 10.5497 4.5583 10.3545 4.75355L6.35445 8.75355C6.17141 8.9366 5.88189 8.94787 5.68551 8.78773L5.64742 8.75355L1.64742 4.75355Z" fill="#fff"/>
   </svg>
 )
 
-// 기수 드롭다운 pill (파란색)
+// Figma 기수/기간 pill 공통 스펙: bg #2656c5, 캡슐형(radius 1000), h28, Bold 12px/자간-0.5, padding 0 8
+const pillStyle: React.CSSProperties = {
+  display: 'inline-flex', alignItems: 'center', height: 28, padding: '0 8px',
+  borderRadius: 9999, background: '#2656c5', color: '#fff', border: 'none',
+  fontSize: 12, fontWeight: 700, letterSpacing: '-0.5px', lineHeight: '18px', whiteSpace: 'nowrap',
+}
+
+// 기수 드롭다운 pill
 const PeriodPill = () => (
-  <button
-    type="button"
-    style={{
-      display: 'inline-flex', alignItems: 'center', gap: 4, height: 28, padding: '0 10px',
-      borderRadius: 8, background: '#105aff', color: '#fff', border: 'none', cursor: 'pointer',
-      fontSize: 13, fontWeight: 500, whiteSpace: 'nowrap',
-    }}
-  >
+  <button type="button" style={{ ...pillStyle, gap: 4, cursor: 'pointer' }}>
     16기 <PillChevron />
   </button>
 )
 
-// 날짜 범위 pill (파란색)
-const DateRangePill = () => (
-  <span
-    style={{
-      display: 'inline-flex', alignItems: 'center', height: 28, padding: '0 10px',
-      borderRadius: 8, background: '#105aff', color: '#fff',
-      fontSize: 13, fontWeight: 500, whiteSpace: 'nowrap',
-    }}
-  >
-    2026.01.01~2026.12.31
-  </span>
-)
+// 날짜 범위 pill
+const DateRangePill = () => <span style={pillStyle}>2026.01.01~2026.12.31</span>
 
 // 메뉴 검색 입력창 (WEHAGO T)
 const MenuSearchInput = () => (
@@ -1951,8 +1941,10 @@ function HeaderDemo() {
             leftExtra={
               <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
                 <CompanyChip />
-                <PeriodPill />
-                <DateRangePill />
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                  <PeriodPill />
+                  <DateRangePill />
+                </span>
               </span>
             }
             center={<MenuSearchInput />}
