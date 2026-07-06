@@ -1,0 +1,46 @@
+.ds-type-specimen {
+  padding: 28px;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.ds-type-big {
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.ds-type-name {
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--text-subtle);
+}
+
+.ds-type-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.ds-type-table td {
+  border-bottom: 1px solid var(--border);
+  padding: 14px 12px;
+  vertical-align: middle;
+}
+
+.ds-type-key {
+  font-weight: 600;
+  font-size: 14px;
+  width: 140px;
+}
+
+.ds-type-val {
+  color: var(--text-subtle);
+  font-size: 13px;
+  width: 120px;
+  font-variant-numeric: tabular-nums;
+}
+
+.ds-type-preview {
+  font-size: 18px;
+}
