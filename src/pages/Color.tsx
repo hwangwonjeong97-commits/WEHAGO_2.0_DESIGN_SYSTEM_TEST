@@ -1,5 +1,4 @@
 import {
-  componentSet,
   getFlat,
   getGroups,
   primitiveSet,
@@ -50,12 +49,6 @@ export default function ColorPage() {
   const primitive = getGroups(primitiveSet, 'color')
   const semantic = getGroups(semanticSet, 'color')
   const alpha = getFlat(semanticSet, 'alpha')
-  const component = getGroups(componentSet, 'color')
-
-  const brokenCount = component
-    .flatMap((g) => g.entries)
-    .concat(semantic.flatMap((g) => g.entries))
-    .filter((e) => e.resolved.broken).length
 
   return (
     <div>
@@ -63,13 +56,6 @@ export default function ColorPage() {
         <h1>Color</h1>
         <p>token.json에서 읽어 alias를 실제 값까지 해석해 렌더링합니다.</p>
       </div>
-
-      {brokenCount > 0 && (
-        <div className="ds-banner">
-          ⚠ 깨진 참조 {brokenCount}건 — 존재하지 않는 semantic 토큰을 가리키는 항목이 있습니다
-          (아래 ⚠ 표시).
-        </div>
-      )}
 
       <section className="ds-section">
         <h2 className="ds-section__title">Primitive</h2>
@@ -95,14 +81,6 @@ export default function ColorPage() {
             </div>
           </div>
         )}
-      </section>
-
-      <section className="ds-section">
-        <h2 className="ds-section__title">Component</h2>
-        <p className="ds-section__desc">semantic을 참조합니다. (고정 계층)</p>
-        {component.map((g) => (
-          <GroupBlock key={g.name} group={g} />
-        ))}
       </section>
     </div>
   )
