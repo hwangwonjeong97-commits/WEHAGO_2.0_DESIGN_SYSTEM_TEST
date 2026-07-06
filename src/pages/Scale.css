@@ -4,6 +4,26 @@
   gap: 20px;
 }
 
+.ds-shadow-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 24px;
+}
+
+.ds-shadow-demo {
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ds-shadow-box {
+  width: 100%;
+  height: 88px;
+  background: #ffffff;
+  border-radius: 12px;
+}
+
 .ds-scale-item {
   display: flex;
   flex-direction: column;
