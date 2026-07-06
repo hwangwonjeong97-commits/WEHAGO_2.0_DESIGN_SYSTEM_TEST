@@ -154,13 +154,9 @@ export default function App() {
       {/* ── Main content ── */}
       <main style={{ marginTop: 44 }} className="md:ml-[220px] min-h-screen overflow-x-hidden">
         {FoundationPage ? (
-          <div className="ds-foundation">
-            <FoundationPage />
-          </div>
+          <FoundationPage />
         ) : (
-          <div className="ds-component-preview">
-            <ComponentsSection category={active as ComponentCategory} />
-          </div>
+          <ComponentsSection category={active as ComponentCategory} />
         )}
       </main>
     </div>

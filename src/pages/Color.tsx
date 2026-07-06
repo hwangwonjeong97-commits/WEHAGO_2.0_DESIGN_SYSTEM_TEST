@@ -1,11 +1,5 @@
-import {
-  getFlat,
-  getGroups,
-  primitiveSet,
-  semanticSet,
-  type TokenEntry,
-  type TokenGroup,
-} from '../tokens'
+import { getFlat, getGroups, primitiveSet, semanticSet, type TokenEntry } from '../tokens'
+import { DocsCard, DocsPage, DocsSection } from '../docs'
 import './Color.css'
 
 function Swatch({ entry }: { entry: TokenEntry }) {
@@ -21,9 +15,7 @@ function Swatch({ entry }: { entry: TokenEntry }) {
       </div>
       <div className="ds-swatch__meta">
         <span className="ds-swatch__name">{entry.name}</span>
-        <span className="ds-swatch__value">
-          {color ? color.toUpperCase() : `→ {${resolved.ref}} 없음`}
-        </span>
+        <span className="ds-swatch__value">{color ? color.toUpperCase() : `→ {${resolved.ref}} 없음`}</span>
         {typeof entry.raw === 'string' && entry.raw.startsWith('{') && color && (
           <span className="ds-swatch__ref">{entry.raw}</span>
         )}
@@ -32,15 +24,12 @@ function Swatch({ entry }: { entry: TokenEntry }) {
   )
 }
 
-function GroupBlock({ group }: { group: TokenGroup }) {
+function SwatchGrid({ entries }: { entries: TokenEntry[] }) {
   return (
-    <div className="ds-color-group">
-      <div className="ds-subheading">{group.name}</div>
-      <div className="ds-swatch-grid">
-        {group.entries.map((e) => (
-          <Swatch key={e.path} entry={e} />
-        ))}
-      </div>
+    <div className="ds-swatch-grid">
+      {entries.map((e) => (
+        <Swatch key={e.path} entry={e} />
+      ))}
     </div>
   )
 }
@@ -51,37 +40,31 @@ export default function ColorPage() {
   const alpha = getFlat(semanticSet, 'alpha')
 
   return (
-    <div>
-      <div className="ds-page-title">
-        <h1>Color</h1>
-        <p>token.json에서 읽어 alias를 실제 값까지 해석해 렌더링합니다.</p>
-      </div>
-
-      <section className="ds-section">
-        <h2 className="ds-section__title">Primitive</h2>
-        <p className="ds-section__desc">실제 raw 값. 이 계층만 변경 가능합니다.</p>
+    <DocsPage
+      eyebrow="Foundation"
+      title="Color"
+      description="token.json에서 읽어 alias를 실제 값까지 해석해 렌더링합니다. Primitive만 변경 가능하며, Semantic은 이를 참조합니다."
+    >
+      <DocsSection title="Primitive">
         {primitive.map((g) => (
-          <GroupBlock key={g.name} group={g} />
+          <DocsCard key={g.name} title={g.name}>
+            <SwatchGrid entries={g.entries} />
+          </DocsCard>
         ))}
-      </section>
+      </DocsSection>
 
-      <section className="ds-section">
-        <h2 className="ds-section__title">Semantic</h2>
-        <p className="ds-section__desc">primitive를 참조합니다. (고정 계층)</p>
+      <DocsSection title="Semantic">
         {semantic.map((g) => (
-          <GroupBlock key={g.name} group={g} />
+          <DocsCard key={g.name} title={g.name}>
+            <SwatchGrid entries={g.entries} />
+          </DocsCard>
         ))}
         {alpha.length > 0 && (
-          <div className="ds-color-group">
-            <div className="ds-subheading">alpha</div>
-            <div className="ds-swatch-grid">
-              {alpha.map((e) => (
-                <Swatch key={e.path} entry={e} />
-              ))}
-            </div>
-          </div>
+          <DocsCard title="alpha">
+            <SwatchGrid entries={alpha} />
+          </DocsCard>
         )}
-      </section>
-    </div>
+      </DocsSection>
+    </DocsPage>
   )
 }
