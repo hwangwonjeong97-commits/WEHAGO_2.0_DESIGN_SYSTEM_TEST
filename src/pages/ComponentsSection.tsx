@@ -2280,20 +2280,15 @@ function StatsBar() {
 
 // ─── Page ────────────────────────────────────────────────────────────────────
 
-export type ComponentCategory =
-  | 'form' | 'button' | 'display'
-  | 'navigation' | 'overlay' | 'feedback'
-  | 'data' | 'actions'
+// Figma 'Component' 섹션 분류(--Type-*)에 맞춘 5개 카테고리
+export type ComponentCategory = 'form' | 'action' | 'navi' | 'display' | 'feedback'
 
 const CATEGORY_META: Record<ComponentCategory, { title: string; description: string }> = {
-  form:       { title: 'Form & Input',      description: '사용자로부터 데이터를 입력받는 컴포넌트입니다. 다양한 입력 형태를 제공하며, 상태와 유효성 검사를 통해 일관된 입력 경험을 만들어냅니다.' },
-  button:     { title: 'Button',            description: '버튼은 사용자의 액션을 유도하는 핵심 UI 요소입니다. 중요도와 상황에 따라 적절한 타입을 선택하여 명확한 시각적 위계를 형성합니다.' },
-  display:    { title: 'Display',           description: '정보를 시각적으로 표현하고 구분하는 컴포넌트입니다. 레이블, 상태, 사용자 정보 등을 간결하게 전달하여 콘텐츠의 가독성을 높입니다.' },
-  navigation: { title: 'Navigation',        description: '사용자가 콘텐츠를 탐색하고 이동할 수 있도록 돕는 컴포넌트입니다. 일관된 구조와 위계를 통해 직관적인 화면 이동 경험을 제공합니다.' },
-  overlay:    { title: 'Overlay & Panel',   description: '현재 화면 위에 레이어로 표시되는 컴포넌트입니다. 추가 정보 전달, 사용자 확인, 옵션 선택 등 맥락에 따른 인터랙션에 활용합니다.' },
-  feedback:   { title: 'Feedback & Status', description: '시스템 상태나 작업 결과를 사용자에게 알리는 컴포넌트입니다. 적절한 타이밍과 위치에서 명확한 피드백을 전달하여 사용자 경험을 향상시킵니다.' },
-  data:       { title: 'Data',              description: '데이터를 구조화하여 표시하는 컴포넌트입니다. 목록, 표, 폼 형태로 다양한 정보를 체계적으로 정리하고 탐색할 수 있도록 합니다.' },
-  actions:    { title: 'Actions',           description: '특정 맥락에서 실행 가능한 액션을 제공하는 컴포넌트입니다. 선택된 항목에 대한 일괄 처리나 파일 업로드 등 작업 중심의 인터랙션을 담당합니다.' },
+  form:     { title: 'Form',       description: '사용자로부터 데이터를 입력받고 액션을 유도하는 컴포넌트입니다. 버튼과 다양한 입력 형태를 제공하며, 상태·유효성 검사를 통해 일관된 입력 경험을 만들어냅니다.' },
+  action:   { title: 'Action',     description: '특정 맥락에서 실행 가능한 작업 중심 컴포넌트입니다. 파일 업로드, 선택 항목 일괄 처리 등 액션을 담당합니다.' },
+  navi:     { title: 'Navigation', description: '사용자가 콘텐츠를 탐색하고 이동할 수 있도록 돕는 컴포넌트입니다. 일관된 구조와 위계로 직관적인 화면 이동 경험을 제공합니다.' },
+  display:  { title: 'Display',    description: '정보를 시각적으로 표현·구분하고 구조화하여 보여주는 컴포넌트입니다. 레이블·상태·사용자 정보·목록·표 등으로 콘텐츠 가독성을 높입니다.' },
+  feedback: { title: 'Feedback',   description: '시스템 상태나 작업 결과를 사용자에게 알리는 컴포넌트입니다. 적절한 타이밍과 위치에서 명확한 피드백을 전달합니다.' },
 }
 
 export default function ComponentsSection({ category }: { category: ComponentCategory }) {
@@ -2308,7 +2303,8 @@ export default function ComponentsSection({ category }: { category: ComponentCat
       </div>
 
       {category === 'form' && (
-        <Section title="Form & Input">
+        <Section title="Form">
+          <ButtonDemo />
           <InputDemo />
           <TextAreaDemo />
           <SearchBarDemo />
@@ -2318,9 +2314,19 @@ export default function ComponentsSection({ category }: { category: ComponentCat
         </Section>
       )}
 
-      {category === 'button' && (
-        <Section title="Button">
-          <ButtonDemo />
+      {category === 'action' && (
+        <Section title="Action">
+          <ActionBarDemo />
+          <FileUploadDemo />
+        </Section>
+      )}
+
+      {category === 'navi' && (
+        <Section title="Navigation">
+          <TabDemo />
+          <HeaderDemo />
+          <LNBDemo />
+          <SNBDemo />
         </Section>
       )}
 
@@ -2331,47 +2337,21 @@ export default function ComponentsSection({ category }: { category: ComponentCat
           <AvatarDemo />
           <ThumbnailDemo />
           <ProfileCardDemo />
-        </Section>
-      )}
-
-      {category === 'navigation' && (
-        <Section title="Navigation">
-          <TabDemo />
-          <HeaderDemo />
-          <LNBDemo />
-          <SNBDemo />
-        </Section>
-      )}
-
-      {category === 'overlay' && (
-        <Section title="Overlay & Panel">
-          <DialogDemo />
           <TooltipDemo />
           <OverflowMenuDemo />
+          <ListDemo />
+          <TableDemo />
+          <FormTableDemo />
+          <InfoBoxDemo />
+          <EmptySetDemo />
         </Section>
       )}
 
       {category === 'feedback' && (
-        <Section title="Feedback & Status">
+        <Section title="Feedback">
+          <DialogDemo />
           <SnackbarDemo />
-          <InfoBoxDemo />
-          <EmptySetDemo />
           <LoadingDemo />
-        </Section>
-      )}
-
-      {category === 'data' && (
-        <Section title="Data">
-          <ListDemo />
-          <TableDemo />
-          <FormTableDemo />
-        </Section>
-      )}
-
-      {category === 'actions' && (
-        <Section title="Actions">
-          <ActionBarDemo />
-          <FileUploadDemo />
         </Section>
       )}
     </div>
