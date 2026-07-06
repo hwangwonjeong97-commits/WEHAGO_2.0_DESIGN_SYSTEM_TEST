@@ -1860,8 +1860,8 @@ const CompanyChip = () => (
   <span
     style={{
       display: 'inline-flex', alignItems: 'center', gap: 6, height: 28, padding: '0 10px',
-      border: '1px solid #e1e1e1', borderRadius: 8, background: '#fff',
-      fontSize: 13, color: '#333333', whiteSpace: 'nowrap',
+      border: '1px solid #e1e1e1', borderRadius: 9999, background: '#fff',
+      fontSize: 12, fontWeight: 500, letterSpacing: '-0.5px', color: '#333333', whiteSpace: 'nowrap',
     }}
   >
     <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#105aff' }} />
@@ -1912,12 +1912,9 @@ const MenuSearchInput = () => (
   </div>
 )
 
-// WEHAGO T 로고 (WEHAGO 로고 + T)
+// WEHAGO T 로고 (Figma 원본 logo_wehagoT, 144×30)
 const WehagoTLogo = () => (
-  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
-    <WehagoLogo />
-    <span style={{ fontSize: 20, fontWeight: 700, color: '#105aff', lineHeight: 1 }}>T</span>
-  </span>
+  <img src="/logo_wehago_t.png" alt="WEHAGO T" style={{ height: 30, objectFit: 'contain', display: 'block' }} />
 )
 
 function HeaderVariant({ label, children }: { label: string; children: React.ReactNode }) {
