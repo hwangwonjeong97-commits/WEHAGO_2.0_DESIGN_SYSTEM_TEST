@@ -65,14 +65,16 @@ export default function TypographyPage() {
       <DocsSection title="Typeface">
         <DocsCard title="Noto Sans CJK KR" description="국문·영문·숫자 공통 기본 글꼴입니다.">
           <div className="ds-type-figure">
-            <div className="ds-type-specimen" style={{ fontFamily: NOTO }}>가나다 AaBbCc 123 @#!?*</div>
-            <div className="ds-type-lh">
-              <span className="ds-type-lh__line" />
-              <span className="ds-type-lh__label">Line-height : 150%</span>
-            </div>
-            <div className="ds-type-ls">
-              <span className="ds-type-ls__line" />
-              <span className="ds-type-ls__label">Letter-spacing : 0.5px</span>
+            <div className="ds-type-figure__box">
+              <div className="ds-type-specimen" style={{ fontFamily: NOTO }}>가나다 AaBbCc 123 @#!?*</div>
+              <div className="ds-type-lh">
+                <span className="ds-type-lh__line" />
+                <span className="ds-type-lh__label">Line-height : 150%</span>
+              </div>
+              <div className="ds-type-ls">
+                <span className="ds-type-ls__line" />
+                <span className="ds-type-ls__label">Letter-spacing : 0.5px</span>
+              </div>
             </div>
           </div>
         </DocsCard>

@@ -1,15 +1,21 @@
 /* ── Typeface specimen (연보라 박스 + line-height/letter-spacing 표기) ── */
+/* 박스+측정선 전체를 카드 가운데에 배치 */
 .ds-type-figure {
+  display: flex;
+  justify-content: center;
+  padding: 4px 0 34px; /* letter-spacing 라벨 공간 */
+}
+
+/* 콘텐츠 폭으로 좁혀 중앙정렬. 측정선은 이 박스 기준으로 붙음 */
+.ds-type-figure__box {
   position: relative;
-  padding-right: 128px; /* line-height 라벨 공간 */
-  padding-bottom: 34px; /* letter-spacing 라벨 공간 */
 }
 
 .ds-type-specimen {
   background: #ecebfa; /* 연보라 */
   border-radius: 4px;
   padding: 20px 28px;
-  font-size: 56px;
+  font-size: 44px;
   font-weight: 700;
   line-height: 1.5; /* 150% */
   letter-spacing: -0.5px;
@@ -18,13 +24,13 @@
   text-align: center; /* Figma 스펙: 중앙정렬 */
 }
 
-/* 오른쪽 line-height 표기 (빨간 세로선 + 라벨) */
+/* 오른쪽 line-height 표기 (박스 오른쪽에 붙는 빨간 세로선 + 라벨) */
 .ds-type-lh {
   position: absolute;
   top: 0;
-  bottom: 34px;
-  right: 0;
-  width: 128px;
+  bottom: 0;
+  left: 100%;
+  margin-left: 12px;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -42,12 +48,13 @@
   white-space: nowrap;
 }
 
-/* 아래쪽 letter-spacing 표기 (빨간 가로선 + 라벨) */
+/* 아래쪽 letter-spacing 표기 (박스 아래 빨간 가로선 + 라벨) */
 .ds-type-ls {
   position: absolute;
   left: 0;
-  right: 128px;
-  bottom: 0;
+  right: 0;
+  top: 100%;
+  margin-top: 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
