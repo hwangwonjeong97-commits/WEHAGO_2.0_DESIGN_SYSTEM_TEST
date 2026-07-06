@@ -15,14 +15,11 @@ type FoundationName = keyof typeof foundationPages
 const foundationNames = Object.keys(foundationPages) as FoundationName[]
 
 const componentItems: { id: ComponentCategory; label: string }[] = [
-  { id: 'button', label: 'Button' },
-  { id: 'form', label: 'Form & Input' },
+  { id: 'form', label: 'Form' },
+  { id: 'action', label: 'Action' },
+  { id: 'navi', label: 'Navigation' },
   { id: 'display', label: 'Display' },
-  { id: 'navigation', label: 'Navigation' },
-  { id: 'overlay', label: 'Overlay & Panel' },
-  { id: 'feedback', label: 'Feedback & Status' },
-  { id: 'data', label: 'Data' },
-  { id: 'actions', label: 'Actions' },
+  { id: 'feedback', label: 'Feedback' },
 ]
 
 const COMPONENT_IDS = new Set<string>(componentItems.map((i) => i.id))
