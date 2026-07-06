@@ -28,7 +28,9 @@
 .ds-swatch__chip {
   height: 56px;
   border-radius: 8px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  border: 1px solid #d0d6e5;
+  /* 체커보드가 테두리 밑으로 비쳐 점선처럼 보이지 않도록 padding-box로 클립 */
+  background-clip: padding-box;
   background-image:
     linear-gradient(45deg, #e1e1e1 25%, transparent 25%),
     linear-gradient(-45deg, #e1e1e1 25%, transparent 25%),
@@ -48,7 +50,7 @@
 
 .ds-swatch__chip--broken {
   background: repeating-linear-gradient(45deg, #fff, #fff 6px, #ffe8ea 6px, #ffe8ea 12px);
-  border: 1px dashed #fa4553;
+  border: 1px solid #fa4553;
   display: flex;
   align-items: center;
   justify-content: center;
