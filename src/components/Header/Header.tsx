@@ -85,6 +85,10 @@ export interface BreadcrumbItem {
 export interface HeaderProps {
   breadcrumbs?: BreadcrumbItem[]
   logo?: React.ReactNode
+  /** 로고/브레드크럼 바로 옆(왼쪽 그룹)에 붙는 요소 — 회사칩, 기수/날짜 pill 등 */
+  leftExtra?: React.ReactNode
+  /** 가운데 영역 — 메뉴 검색 입력창 등 (WEHAGO T) */
+  center?: React.ReactNode
   rightIcons?: React.ReactNode
   userName?: string
   userTitle?: string
@@ -113,6 +117,8 @@ const ChevronDown = () => (
 export const Header: React.FC<HeaderProps> = ({
   breadcrumbs,
   logo,
+  leftExtra,
+  center,
   rightIcons,
   userName,
   userTitle,
@@ -130,7 +136,7 @@ export const Header: React.FC<HeaderProps> = ({
     >
       <div className="flex items-center h-full px-5 min-w-max">
         {/* Left — breadcrumb 아이템 gap=2px */}
-        <div className="flex items-center flex-1">
+        <div className={`flex items-center gap-2 ${center ? '' : 'flex-1'}`}>
           {breadcrumbs && breadcrumbs.length > 0 ? (
             <nav aria-label="경로" className="flex items-center">
               {breadcrumbs.map((item, idx) => (
@@ -150,7 +156,13 @@ export const Header: React.FC<HeaderProps> = ({
           ) : logo ? (
             <div className="flex items-center">{logo}</div>
           ) : null}
+          {leftExtra}
         </div>
+
+        {/* Center — 메뉴 검색 등 */}
+        {center && (
+          <div className="flex items-center flex-1 justify-center px-6 min-w-0">{center}</div>
+        )}
 
         {/* Right — 섹션 간 gap=4px */}
         <div className="flex items-center gap-1 flex-shrink-0">

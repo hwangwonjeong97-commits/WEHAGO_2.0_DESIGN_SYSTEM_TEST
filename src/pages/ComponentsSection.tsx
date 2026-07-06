@@ -1819,53 +1819,161 @@ function ProfileCardDemo() {
 
 // ─── Header ───────────────────────────────────────────────────────────────────
 
-function HeaderDemo() {
-  const icons = (
-    <>
-      <HeaderIconButton aria-label="검색" icon={<IcSearch />} />
-      <HeaderIconButton aria-label="알림" icon={<IcAlarm />} badge="99+" />
-      <HeaderIconButton aria-label="북마크" icon={<IcBookmark />} />
-      <HeaderIconButton aria-label="영상" icon={<IcVideo />} />
-      <HeaderIconButton aria-label="채팅" icon={<IcChat />} badge={3} />
-      <HeaderIconButton aria-label="받은함" icon={<IcInbox />} />
-      <HeaderIconButton aria-label="조직도" icon={<IcTree />} />
-    </>
+// 헤더 우측 아이콘 세트
+const HeaderFullIcons = () => (
+  <>
+    <HeaderIconButton aria-label="검색" icon={<IcSearch />} />
+    <HeaderIconButton aria-label="알림" icon={<IcAlarm />} badge="99+" />
+    <HeaderIconButton aria-label="북마크" icon={<IcBookmark />} />
+    <HeaderIconButton aria-label="영상" icon={<IcVideo />} />
+    <HeaderIconButton aria-label="채팅" icon={<IcChat />} />
+    <HeaderIconButton aria-label="받은함" icon={<IcInbox />} />
+    <HeaderIconButton aria-label="조직도" icon={<IcTree />} />
+  </>
+)
+// WEHAGO T: 검색 아이콘·받은함 제외 (검색은 입력창으로 대체)
+const HeaderTIcons = () => (
+  <>
+    <HeaderIconButton aria-label="알림" icon={<IcAlarm />} badge="99+" />
+    <HeaderIconButton aria-label="북마크" icon={<IcBookmark />} />
+    <HeaderIconButton aria-label="영상" icon={<IcVideo />} />
+    <HeaderIconButton aria-label="채팅" icon={<IcChat />} />
+    <HeaderIconButton aria-label="조직도" icon={<IcTree />} />
+  </>
+)
+
+// 회사칩 — (주)더존비즈온
+const CompanyChip = () => (
+  <span
+    style={{
+      display: 'inline-flex', alignItems: 'center', gap: 6, height: 28, padding: '0 10px',
+      border: '1px solid #e1e1e1', borderRadius: 8, background: '#fff',
+      fontSize: 13, color: '#333333', whiteSpace: 'nowrap',
+    }}
+  >
+    <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#105aff' }} />
+    (주)더존비즈온
+  </span>
+)
+
+const PillChevron = () => (
+  <svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+    <path d="M1.64742 4.75355C1.45216 4.55829 1.45216 4.24178 1.64742 4.04652C1.84269 3.85126 2.15919 3.85126 2.35445 4.04652L6.00094 7.693L9.64742 4.04652C9.84268 3.85126 10.1592 3.85126 10.3545 4.04652C10.5497 4.24179 10.5497 4.5583 10.3545 4.75355L6.35445 8.75355C6.17141 8.9366 5.88189 8.94787 5.68551 8.78773L5.64742 8.75355L1.64742 4.75355Z" fill="#fff"/>
+  </svg>
+)
+
+// 기수 드롭다운 pill (파란색)
+const PeriodPill = () => (
+  <button
+    type="button"
+    style={{
+      display: 'inline-flex', alignItems: 'center', gap: 4, height: 28, padding: '0 10px',
+      borderRadius: 8, background: '#105aff', color: '#fff', border: 'none', cursor: 'pointer',
+      fontSize: 13, fontWeight: 500, whiteSpace: 'nowrap',
+    }}
+  >
+    16기 <PillChevron />
+  </button>
+)
+
+// 날짜 범위 pill (파란색)
+const DateRangePill = () => (
+  <span
+    style={{
+      display: 'inline-flex', alignItems: 'center', height: 28, padding: '0 10px',
+      borderRadius: 8, background: '#105aff', color: '#fff',
+      fontSize: 13, fontWeight: 500, whiteSpace: 'nowrap',
+    }}
+  >
+    2026.01.01~2026.12.31
+  </span>
+)
+
+// 메뉴 검색 입력창 (WEHAGO T)
+const MenuSearchInput = () => (
+  <div style={{ position: 'relative', width: '100%', maxWidth: 460 }}>
+    <input
+      type="text"
+      placeholder="메뉴명을 입력해주세요(F10)"
+      style={{
+        width: '100%', height: 32, padding: '0 36px 0 12px', borderRadius: 8,
+        border: '1px solid #d3d3d3', fontSize: 14, color: '#333', outline: 'none',
+        fontFamily: 'inherit',
+      }}
+    />
+    <span style={{ position: 'absolute', right: 10, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }} aria-hidden="true">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+        <path fillRule="evenodd" clipRule="evenodd" d="M10.4502 2.40039C14.896 2.40039 18.5 6.00441 18.5 10.4502C18.5 12.403 17.8041 14.193 16.6475 15.5869L20.5303 19.4697C20.8231 19.7626 20.8231 20.2374 20.5303 20.5303C20.2374 20.8231 19.7626 20.8231 19.4697 20.5303L15.5869 16.6475C14.193 17.8041 12.403 18.5 10.4502 18.5C6.00441 18.5 2.40039 14.896 2.40039 10.4502C2.40039 6.00441 6.00441 2.40039 10.4502 2.40039ZM10.4502 3.90039C6.83284 3.90039 3.90039 6.83284 3.90039 10.4502C3.90039 14.0676 6.83284 17 10.4502 17C14.0676 17 17 14.0676 17 10.4502C17 6.83284 14.0676 3.90039 10.4502 3.90039Z" fill="#777777"/>
+      </svg>
+    </span>
+  </div>
+)
+
+// WEHAGO T 로고 (WEHAGO 로고 + T)
+const WehagoTLogo = () => (
+  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+    <WehagoLogo />
+    <span style={{ fontSize: 20, fontWeight: 700, color: '#105aff', lineHeight: 1 }}>T</span>
+  </span>
+)
+
+function HeaderVariant({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <p className="text-body5 text-neutral-500 mb-1.5">{label}</p>
+      <div className="border border-secondary-100 rounded-xl overflow-hidden">{children}</div>
+    </div>
   )
+}
+
+function HeaderDemo() {
+  const avatar = <HeaderAvatar name="김더존" src="https://i.pravatar.cc/32?img=12" />
   return (
     <PreviewCard
       title="Header"
-      description="페이지 최상단 글로벌 헤더입니다. Breadcrumb · Logo 두 가지 타입을 지원하며 검색 · 알림 · 프로필 기능을 포함합니다."
+      description="페이지 최상단 글로벌 헤더입니다. WEHAGO · WEHAGO T · Breadcrumb 3가지 타입을 지원합니다."
       importPath={`import { Header } from './components'`}
     >
-      <div className="w-full space-y-3">
-        <div>
-          <p className="text-body5 text-neutral-500 mb-1.5">Breadcrumb</p>
-          <div className="border border-secondary-100 rounded-xl overflow-hidden">
-            <Header
-              breadcrumbs={[
-                { label: '스페이스명', onClick: () => {} },
-                { label: '서비스명', onClick: () => {} },
-                { label: '09기' },
-              ]}
-              rightActions={<OneAiButton />}
-              rightIcons={icons}
-              userName="김더존" userTitle="대리"
-              userAvatar={<HeaderAvatar name="김더존" />}
-            />
-          </div>
-        </div>
-        <div>
-          <p className="text-body5 text-neutral-500 mb-1.5">Logo</p>
-          <div className="border border-secondary-100 rounded-xl overflow-hidden">
-            <Header
-              logo={<WehagoLogo />}
-              rightActions={<OneAiButton />}
-              rightIcons={icons}
-              userName="황원정" userTitle="사원"
-              userAvatar={<HeaderAvatar name="황원정" src="https://i.pravatar.cc/32?img=5" />}
-            />
-          </div>
-        </div>
+      <div className="w-full space-y-4">
+        <HeaderVariant label="WEHAGO">
+          <Header
+            logo={<WehagoLogo />}
+            leftExtra={<CompanyChip />}
+            rightActions={<OneAiButton />}
+            rightIcons={<HeaderFullIcons />}
+            userName="김더존" userTitle="대리" userAvatar={avatar}
+          />
+        </HeaderVariant>
+
+        <HeaderVariant label="WEHAGO T">
+          <Header
+            logo={<WehagoTLogo />}
+            leftExtra={
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+                <CompanyChip />
+                <PeriodPill />
+                <DateRangePill />
+              </span>
+            }
+            center={<MenuSearchInput />}
+            rightActions={<OneAiButton />}
+            rightIcons={<HeaderTIcons />}
+            userName="김더존" userTitle="대리" userAvatar={avatar}
+          />
+        </HeaderVariant>
+
+        <HeaderVariant label="Breadcrumb">
+          <Header
+            breadcrumbs={[
+              { label: '스페이스명', onClick: () => {} },
+              { label: '서비스명', onClick: () => {} },
+              { label: '09기', onClick: () => {} },
+            ]}
+            rightActions={<OneAiButton />}
+            rightIcons={<HeaderFullIcons />}
+            userName="김더존" userTitle="대리" userAvatar={avatar}
+          />
+        </HeaderVariant>
       </div>
     </PreviewCard>
   )
