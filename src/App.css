@@ -81,6 +81,12 @@
   max-width: 1100px;
 }
 
+/* 컴포넌트 페이지는 자체 레이아웃(maxWidth/padding)을 쓰므로 여백 제거 */
+.ds-content--flush {
+  padding: 0;
+  max-width: none;
+}
+
 .ds-page-title {
   margin-bottom: 8px;
 }

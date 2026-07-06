@@ -2,19 +2,39 @@ import { useState } from 'react'
 import ColorPage from './pages/Color'
 import ScalePage from './pages/Scale'
 import TypographyPage from './pages/Typography'
+import ComponentsSection, { type ComponentCategory } from './pages/ComponentsSection'
 import './App.css'
 
-const pages = {
+const foundationPages = {
   Color: ColorPage,
   Scale: ScalePage,
   Typography: TypographyPage,
 } as const
 
-type PageName = keyof typeof pages
+type FoundationName = keyof typeof foundationPages
+const foundationNames = Object.keys(foundationPages) as FoundationName[]
+
+const componentCategories: { id: ComponentCategory; label: string }[] = [
+  { id: 'button', label: 'Button' },
+  { id: 'form', label: 'Form & Input' },
+  { id: 'display', label: 'Display' },
+  { id: 'navigation', label: 'Navigation' },
+  { id: 'overlay', label: 'Overlay & Panel' },
+  { id: 'feedback', label: 'Feedback & Status' },
+  { id: 'data', label: 'Data' },
+  { id: 'actions', label: 'Actions' },
+]
+
+type Active = FoundationName | ComponentCategory
+
+function isFoundation(a: Active): a is FoundationName {
+  return (foundationNames as string[]).includes(a)
+}
 
 export default function App() {
-  const [active, setActive] = useState<PageName>('Color')
-  const ActivePage = pages[active]
+  const [active, setActive] = useState<Active>('Color')
+  const foundation = isFoundation(active)
+  const ActivePage = foundation ? foundationPages[active] : null
 
   return (
     <div className="ds-shell">
@@ -26,7 +46,7 @@ export default function App() {
         <nav>
           <div className="ds-nav__group">Foundation</div>
           <ul>
-            {(Object.keys(pages) as PageName[]).map((name) => (
+            {foundationNames.map((name) => (
               <li key={name}>
                 <button
                   type="button"
@@ -38,11 +58,31 @@ export default function App() {
               </li>
             ))}
           </ul>
+          <div className="ds-nav__group">Components</div>
+          <ul>
+            {componentCategories.map((c) => (
+              <li key={c.id}>
+                <button
+                  type="button"
+                  className={`ds-nav__item${active === c.id ? ' ds-nav__item--active' : ''}`}
+                  onClick={() => setActive(c.id)}
+                >
+                  {c.label}
+                </button>
+              </li>
+            ))}
+          </ul>
         </nav>
         <div className="ds-nav__foot">token.json 기반 · 자동 생성</div>
       </aside>
-      <main className="ds-content">
-        <ActivePage />
+      <main className={foundation ? 'ds-content' : 'ds-content ds-content--flush'}>
+        {ActivePage ? (
+          <ActivePage />
+        ) : (
+          <div className="ds-component-preview">
+            <ComponentsSection category={active as ComponentCategory} />
+          </div>
+        )}
       </main>
     </div>
   )

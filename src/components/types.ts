@@ -1,0 +1,5 @@
+export type Size = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+export type Variant = 'primary' | 'secondary' | 'tertiary'
+export type Status = 'default' | 'error' | 'disabled' | 'success' | 'warning'
+export type ColorScheme = 'primary' | 'negative' | 'positive' | 'pending' | 'secondary'
+export type Placement = 'top' | 'bottom' | 'left' | 'right'
