@@ -1,6 +1,6 @@
 .ds-type-specimen {
   padding: 28px;
-  background: var(--bg-subtle);
+  background: #ffffff;
   border: 1px solid var(--border);
   border-radius: var(--radius);
 }

@@ -1,4 +1,5 @@
 import { getFlat, semanticSet, type TokenEntry } from '../tokens'
+import { DocsCard, DocsPage, DocsSection } from '../docs'
 import './Scale.css'
 
 function px(entry: TokenEntry): number | null {
@@ -58,51 +59,41 @@ export default function ScalePage() {
   const size = getFlat(semanticSet, 'size')
 
   return (
-    <div>
-      <div className="ds-page-title">
-        <h1>Scale</h1>
-        <p>radius · gap · padding · size 스케일 ({'{number.*}'} 참조를 px로 해석).</p>
-      </div>
-
-      <section className="ds-section">
-        <h2 className="ds-section__title">Radius</h2>
-        <p className="ds-section__desc">모서리 곡률.</p>
-        <div className="ds-scale-grid">
-          {radius.map((e) => (
-            <RadiusRow key={e.path} entry={e} />
-          ))}
-        </div>
-      </section>
-
-      <section className="ds-section">
-        <h2 className="ds-section__title">Gap</h2>
-        <p className="ds-section__desc">요소 사이 간격.</p>
-        <div className="ds-scale-grid">
-          {gap.map((e) => (
-            <BarRow key={e.path} entry={e} axis="w" />
-          ))}
-        </div>
-      </section>
-
-      <section className="ds-section">
-        <h2 className="ds-section__title">Padding</h2>
-        <p className="ds-section__desc">내부 여백.</p>
-        <div className="ds-scale-grid">
-          {padding.map((e) => (
-            <BoxRow key={e.path} entry={e} />
-          ))}
-        </div>
-      </section>
-
-      <section className="ds-section">
-        <h2 className="ds-section__title">Size</h2>
-        <p className="ds-section__desc">컴포넌트 높이/너비.</p>
-        <div className="ds-scale-grid">
-          {size.map((e) => (
-            <BarRow key={e.path} entry={e} axis="h" />
-          ))}
-        </div>
-      </section>
-    </div>
+    <DocsPage
+      eyebrow="Foundation"
+      title="Scale"
+      description="radius · gap · padding · size 스케일입니다. token.json의 {number.*} 참조를 px로 해석합니다."
+    >
+      <DocsSection>
+        <DocsCard title="Radius" description="모서리 곡률.">
+          <div className="ds-scale-grid">
+            {radius.map((e) => (
+              <RadiusRow key={e.path} entry={e} />
+            ))}
+          </div>
+        </DocsCard>
+        <DocsCard title="Gap" description="요소 사이 간격.">
+          <div className="ds-scale-grid">
+            {gap.map((e) => (
+              <BarRow key={e.path} entry={e} axis="w" />
+            ))}
+          </div>
+        </DocsCard>
+        <DocsCard title="Padding" description="내부 여백.">
+          <div className="ds-scale-grid">
+            {padding.map((e) => (
+              <BoxRow key={e.path} entry={e} />
+            ))}
+          </div>
+        </DocsCard>
+        <DocsCard title="Size" description="컴포넌트 높이/너비.">
+          <div className="ds-scale-grid">
+            {size.map((e) => (
+              <BarRow key={e.path} entry={e} axis="h" />
+            ))}
+          </div>
+        </DocsCard>
+      </DocsSection>
+    </DocsPage>
   )
 }
