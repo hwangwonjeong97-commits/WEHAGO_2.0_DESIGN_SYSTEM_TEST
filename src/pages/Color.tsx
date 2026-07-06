@@ -35,7 +35,8 @@ function SwatchGrid({ entries }: { entries: TokenEntry[] }) {
 }
 
 export default function ColorPage() {
-  const primitive = getGroups(primitiveSet, 'color')
+  // deprecated 그룹은 문서 사이트에서 제외 (token.json에는 유지)
+  const primitive = getGroups(primitiveSet, 'color').filter((g) => g.name !== 'deprecated')
   const semantic = getGroups(semanticSet, 'color')
   const alpha = getFlat(semanticSet, 'alpha')
 
