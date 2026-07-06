@@ -1819,6 +1819,17 @@ function ProfileCardDemo() {
 
 // ─── Header ───────────────────────────────────────────────────────────────────
 
+// WEbot — 우측 아이콘 줄 맨 끝의 AI 어시스트 아바타 (34×34)
+const WebotButton = () => (
+  <button
+    type="button"
+    aria-label="WEbot"
+    style={{ padding: 0, border: 'none', background: 'none', cursor: 'pointer', width: 34, height: 34, flexShrink: 0 }}
+  >
+    <img src="/webot.png" alt="WEbot" width={34} height={34} style={{ display: 'block', objectFit: 'contain' }} />
+  </button>
+)
+
 // 헤더 우측 아이콘 세트
 const HeaderFullIcons = () => (
   <>
@@ -1829,6 +1840,7 @@ const HeaderFullIcons = () => (
     <HeaderIconButton aria-label="채팅" icon={<IcChat />} />
     <HeaderIconButton aria-label="받은함" icon={<IcInbox />} />
     <HeaderIconButton aria-label="조직도" icon={<IcTree />} />
+    <WebotButton />
   </>
 )
 // WEHAGO T: 검색 아이콘·받은함 제외 (검색은 입력창으로 대체)
@@ -1839,6 +1851,7 @@ const HeaderTIcons = () => (
     <HeaderIconButton aria-label="영상" icon={<IcVideo />} />
     <HeaderIconButton aria-label="채팅" icon={<IcChat />} />
     <HeaderIconButton aria-label="조직도" icon={<IcTree />} />
+    <WebotButton />
   </>
 )
 
