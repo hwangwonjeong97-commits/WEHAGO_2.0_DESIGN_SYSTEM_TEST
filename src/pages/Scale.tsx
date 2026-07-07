@@ -14,17 +14,17 @@ function label(prefix: string, entry: TokenEntry): string {
   return `${prefix}/${entry.name}(${px(entry)}px)`
 }
 
-// Radius: 흰 박스(모서리=radius) + 우하단 파란 원(지름=2*radius). max는 원이 박스를 꽉 채움.
+// Radius (Figma Radius.svg): box #f7f8fa+#989898, 우하단 원 중심 (60-r,60-r)·반지름 r, #719bfc@40%+#447cfc
 function RadiusItem({ entry }: { entry: TokenEntry }) {
   const r = px(entry) ?? 0
-  const boxR = Math.min(r, BOX / 2)
-  const circle = Math.min(r * 2, BOX)
+  const rr = Math.min(r, 30) // max(1000) → 꽉 찬 원
   return (
     <div className="ds-scale-item">
       <div className="ds-scale-shape">
-        <div className="ds-radius-box" style={{ borderRadius: boxR }}>
-          <div className="ds-radius-corner" style={{ width: circle, height: circle }} />
-        </div>
+        <svg width={BOX} height={BOX} viewBox="0 0 60 60" fill="none">
+          <rect x="0.5" y="0.5" width="59" height="59" rx={rr} fill="#F7F8FA" stroke="#989898" />
+          <circle cx={60 - rr} cy={60 - rr} r={rr} fill="#719BFC" fillOpacity="0.4" stroke="#447CFC" strokeWidth="0.5" />
+        </svg>
       </div>
       <span className="ds-scale-label">{label('radius', entry)}</span>
     </div>
@@ -48,16 +48,17 @@ function GapItem({ entry }: { entry: TokenEntry }) {
   )
 }
 
-// Padding: 파란 사각형 + 안쪽 흰 사각형(흰 사각형 = 콘텐츠, 파란 여백 = padding).
+// Padding (Figma Padding.svg): box #f7f8fa+#989898, padding은 안쪽 #719bfc@40% stroke(두께=padding값)
 function PaddingItem({ entry }: { entry: TokenEntry }) {
   const p = px(entry) ?? 0
-  const inner = Math.max(4, BOX - p * 2)
+  const pp = Math.min(p, 30)
   return (
     <div className="ds-scale-item">
       <div className="ds-scale-shape">
-        <div className="ds-pad-box">
-          <div className="ds-pad-inner" style={{ width: inner, height: inner }} />
-        </div>
+        <svg width={BOX} height={BOX} viewBox="0 0 60 60" fill="none">
+          <rect x="0.5" y="0.5" width="59" height="59" rx="4" fill="#F7F8FA" stroke="#989898" />
+          <rect x={pp / 2} y={pp / 2} width={60 - pp} height={60 - pp} fill="none" stroke="#719BFC" strokeOpacity="0.4" strokeWidth={pp} />
+        </svg>
       </div>
       <span className="ds-scale-label">{label('padding', entry)}</span>
     </div>
@@ -77,9 +78,10 @@ function SizeRow({ entry }: { entry: TokenEntry }) {
 
 // Figma는 shadow-level 1·2·3만 정의(실제 blur/offset 값은 Figma effect로 관리, 토큰 미포함).
 const SHADOWS = [
-  { name: 'shadow-level 1', css: '0 1px 4px rgba(0,0,0,0.10), 0 1px 2px rgba(0,0,0,0.08)' },
-  { name: 'shadow-level 2', css: '0 4px 14px rgba(0,0,0,0.14), 0 2px 4px rgba(0,0,0,0.08)' },
-  { name: 'shadow-level 3', css: '0 12px 32px rgba(0,0,0,0.20), 0 4px 8px rgba(0,0,0,0.10)' },
+  // Figma 정확값 (X Y Blur Spread #000 10%)
+  { name: 'shadow-level 1', css: '0 2px 4px 0 rgba(0,0,0,0.1)' },   // X0 Y2 Blur4
+  { name: 'shadow-level 2', css: '0 4px 12px 0 rgba(0,0,0,0.1)' },  // X0 Y4 Blur12
+  { name: 'shadow-level 3', css: '4px 8px 20px 0 rgba(0,0,0,0.1)' },// X4 Y8 Blur20
 ]
 
 export default function ScalePage() {
@@ -96,7 +98,7 @@ export default function ScalePage() {
       description="radius · gap · padding · size · shadow 스케일입니다. token.json의 {number.*} 참조를 px로 해석합니다."
     >
       <DocsSection>
-        <DocsCard title="Radius" description="모서리 곡률. 우하단 원의 반지름이 곡률과 같습니다.">
+        <DocsCard largeTitle title="Radius" description="모서리 곡률. 우하단 원의 반지름이 곡률과 같습니다.">
           <div className="ds-scale-grid">
             {radius.map((e) => (
               <RadiusItem key={e.path} entry={e} />
@@ -104,7 +106,7 @@ export default function ScalePage() {
           </div>
         </DocsCard>
 
-        <DocsCard title="Gap" description="요소 사이 간격.">
+        <DocsCard largeTitle title="Gap" description="요소 사이 간격.">
           <div className="ds-scale-grid">
             {gap.map((e) => (
               <GapItem key={e.path} entry={e} />
@@ -112,7 +114,7 @@ export default function ScalePage() {
           </div>
         </DocsCard>
 
-        <DocsCard title="Padding" description="내부 여백. 파란 영역이 여백, 흰 사각형이 콘텐츠입니다.">
+        <DocsCard largeTitle title="Padding" description="내부 여백. 파란 영역이 여백, 흰 사각형이 콘텐츠입니다.">
           <div className="ds-scale-grid">
             {padding.map((e) => (
               <PaddingItem key={e.path} entry={e} />
@@ -120,7 +122,7 @@ export default function ScalePage() {
           </div>
         </DocsCard>
 
-        <DocsCard title="Size" description="컴포넌트 높이/너비.">
+        <DocsCard largeTitle title="Size" description="컴포넌트 높이/너비.">
           <div className="ds-size-list">
             {size.map((e) => (
               <SizeRow key={e.path} entry={e} />
@@ -128,14 +130,12 @@ export default function ScalePage() {
           </div>
         </DocsCard>
 
-        <DocsCard title="Shadow" description="그림자 레벨. 실제 blur/offset 값은 Figma effect로 관리됩니다.">
+        <DocsCard largeTitle title="Shadow" description="그림자 레벨. 실제 blur/offset 값은 Figma effect로 관리됩니다.">
           <div className="ds-shadow-grid">
             {SHADOWS.map((s) => (
-              <div key={s.name} className="ds-scale-item">
-                <div className="ds-shadow-demo">
-                  <div className="ds-shadow-box" style={{ boxShadow: s.css }} />
-                </div>
-                <span className="ds-scale-label">{s.name}</span>
+              <div key={s.name} className="ds-shadow-item">
+                <span className="ds-shadow-label">{s.name}</span>
+                <div className="ds-shadow-box" style={{ boxShadow: s.css }} />
               </div>
             ))}
           </div>

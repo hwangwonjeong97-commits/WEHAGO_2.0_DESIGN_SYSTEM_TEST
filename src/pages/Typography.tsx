@@ -47,15 +47,6 @@ function ScaleRow({ item }: { item: Scale }) {
 }
 
 export default function TypographyPage() {
-  const groups = getGroups(primitiveSet, 'typo')
-  const weights = groups.find((g) => g.name === 'font-weight')?.entries ?? []
-
-  const weightRows: { label: string; css: number; token?: TokenEntry }[] = [
-    { label: 'Regular', css: 400, token: weights.find((w) => w.name === 'regular') },
-    { label: 'Medium', css: 500, token: weights.find((w) => w.name === 'medium') },
-    { label: 'Bold', css: 700, token: weights.find((w) => w.name === 'bold') },
-  ]
-
   return (
     <DocsPage
       eyebrow="Foundation"
@@ -76,22 +67,6 @@ export default function TypographyPage() {
                 <span className="ds-type-ls__label">Letter-spacing : 0.5px</span>
               </div>
             </div>
-          </div>
-        </DocsCard>
-
-        <DocsCard title="Weight" description="Regular · Medium · Bold 세 가지 굵기를 사용합니다.">
-          <div className="ds-type-weights">
-            {weightRows.map((w) => (
-              <div key={w.label} className="ds-type-weight">
-                <span className="ds-type-weight__big" style={{ fontFamily: NOTO, fontWeight: w.css }}>
-                  가나다 AaBbCc 123
-                </span>
-                <span className="ds-type-weight__label">
-                  {w.label} · {w.css}
-                  {w.token ? ` · {${w.token.name}}` : ''}
-                </span>
-              </div>
-            ))}
           </div>
         </DocsCard>
       </DocsSection>

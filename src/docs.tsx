@@ -37,31 +37,30 @@ export function DocsSection({ title, children }: { title?: string; children: Rea
       {title && (
         <h3 style={{ fontSize: 21, fontWeight: 600, color: '#1d1d1f', letterSpacing: '-0.3px', marginBottom: 16 }}>{title}</h3>
       )}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 20, width: '100%' }}>{children}</div>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 48, width: '100%' }}>{children}</div>
     </section>
   )
 }
 
+// 타이틀은 카드 밖(위) 21px 헤딩. 설명(description)은 제거(하위호환용 무시 prop).
 export function DocsCard({
   title,
-  description,
+  largeTitle = false,
   children,
 }: {
   title?: string
   description?: string
+  largeTitle?: boolean // Scale처럼 섹션 제목 없이 카드 제목이 최상위일 때 21px
   children: React.ReactNode
 }) {
   return (
-    <div style={{ borderRadius: 18, border: '1px solid #e0e0e0', width: '100%', boxSizing: 'border-box', overflow: 'hidden' }}>
-      {(title || description) && (
-        <div style={{ padding: '20px 24px', borderBottom: '1px solid #e0e0e0', background: '#ffffff' }}>
-          {title && <h4 style={{ fontSize: 17, fontWeight: 600, color: '#1d1d1f', letterSpacing: '-0.3px', margin: 0 }}>{title}</h4>}
-          {description && (
-            <p style={{ fontSize: 14, color: '#6e6e73', marginTop: 4, letterSpacing: '-0.224px', lineHeight: 1.4 }}>{description}</p>
-          )}
-        </div>
+    <div style={{ width: '100%', minWidth: 0 }}>
+      {title && (
+        <h4 style={{ fontSize: largeTitle ? 21 : 16, fontWeight: 600, color: '#1d1d1f', letterSpacing: '-0.3px', margin: largeTitle ? '0 0 16px' : '0 0 10px' }}>{title}</h4>
       )}
-      <div style={{ background: '#f9f9f9', padding: 24, overflowX: 'auto' }}>{children}</div>
+      <div style={{ borderRadius: 18, border: '1px solid #e0e0e0', width: '100%', boxSizing: 'border-box', overflow: 'hidden' }}>
+        <div style={{ background: '#f9f9f9', padding: 24, overflowX: 'auto' }}>{children}</div>
+      </div>
     </div>
   )
 }

@@ -9,11 +9,11 @@ interface BadgeNotiProps extends HTMLAttributes<HTMLSpanElement> {
   dot?: boolean
 }
 
-// ─── BadgeAuth (권한 뱃지) ────────────────────────────────────────────────────
+// ─── Badge/Role (권한 뱃지, Figma명) — 'auth'/'user'는 하위호환 alias ─────────
 
 interface BadgeAuthProps extends HTMLAttributes<HTMLSpanElement> {
-  variant: 'auth'
-  type: 'master' | 'user' | 'guest'
+  variant: 'role' | 'auth'
+  type: 'master' | 'member' | 'guest' | 'user'
 }
 
 // ─── Badge (상태 라벨) ─────────────────────────────────────────────────────────
@@ -65,9 +65,10 @@ const IcArrowRight10: React.FC = () => (
 
 // ─── Style maps ───────────────────────────────────────────────────────────────
 
-const authConfig = {
+// Badge/Role: Master · Member · Guest (Figma)
+const roleConfig = {
   master: { bg: 'bg-[#ffa000]', label: '마스터', Icon: IcMasterFill, arrow: false },
-  user:   { bg: 'bg-[#748ffc]', label: '참여자', Icon: IcUserFill,   arrow: false },
+  member: { bg: 'bg-[#748ffc]', label: '참여자', Icon: IcUserFill,   arrow: false },
   guest:  { bg: 'bg-[#98a4b4]', label: '게스트', Icon: IcLink,       arrow: false },
 }
 
@@ -135,10 +136,11 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>((props, ref) => {
     )
   }
 
-  // Auth variant
-  if ('variant' in props && props.variant === 'auth') {
+  // Role variant (Figma Badge/Role) — 'auth' 하위호환
+  if ('variant' in props && (props.variant === 'role' || props.variant === 'auth')) {
     const { type } = props as BadgeAuthProps
-    const { bg, label, Icon, arrow } = authConfig[type]
+    const key = type === 'user' ? 'member' : type   // 'user' 하위호환
+    const { bg, label, Icon, arrow } = roleConfig[key]
     return (
       <span
         ref={ref}

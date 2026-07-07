@@ -50,6 +50,8 @@ const NAV_LABEL: React.CSSProperties = {
   marginBottom: 2,
 }
 
+const HEADER_H = 56
+
 export default function App() {
   const [active, setActive] = useState<NavSection>('Color')
   const [drawerOpen, setDrawerOpen] = useState(false)
@@ -61,6 +63,32 @@ export default function App() {
     setActive(id)
     setDrawerOpen(false)
   }
+
+  // 상단 우측 탭: 그룹 전환 시 해당 그룹의 첫 메뉴로 이동
+  const handleTab = (tab: 'foundation' | 'components') => {
+    setActive(tab === 'foundation' ? 'Color' : componentItems[0].id)
+    setDrawerOpen(false)
+  }
+
+  const tabButton = (label: string, isActive: boolean, onClick: () => void) => (
+    <button
+      onClick={onClick}
+      style={{
+        height: HEADER_H,
+        padding: '0 4px',
+        border: 'none',
+        background: 'none',
+        cursor: 'pointer',
+        fontSize: 15,
+        fontWeight: isActive ? 600 : 400,
+        color: isActive ? '#1d1d1f' : '#6e6e73',
+        borderBottom: isActive ? '2px solid #1d1d1f' : '2px solid transparent',
+        letterSpacing: '-0.2px',
+      }}
+    >
+      {label}
+    </button>
+  )
 
   const navButton = (id: NavSection, label: string) => (
     <button
@@ -79,19 +107,20 @@ export default function App() {
 
   return (
     <div style={{ minHeight: '100vh', background: '#ffffff' }}>
-      {/* ── Top nav bar ── */}
+      {/* ── Top nav bar (white) ── */}
       <nav
         style={{
           position: 'fixed',
           top: 0,
           left: 0,
           right: 0,
-          height: 44,
-          background: '#000000',
+          height: HEADER_H,
+          background: '#ffffff',
+          borderBottom: '1px solid #e0e0e0',
           zIndex: 50,
           display: 'flex',
           alignItems: 'center',
-          padding: '0 20px',
+          padding: '0 24px',
           gap: 10,
         }}
       >
@@ -99,14 +128,19 @@ export default function App() {
           className="md:hidden"
           onClick={() => setDrawerOpen(true)}
           aria-label="Open menu"
-          style={{ color: '#fff', background: 'none', border: 'none', cursor: 'pointer', padding: 4, marginRight: 4 }}
+          style={{ color: '#1d1d1f', background: 'none', border: 'none', cursor: 'pointer', padding: 4, marginRight: 4 }}
         >
           <svg width="18" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
             <path d="M1 2h16M1 7h16M1 12h16" />
           </svg>
         </button>
-        <span style={{ fontSize: 15, fontWeight: 600, color: '#fff', letterSpacing: '-0.3px' }}>WEHAGO 2.0</span>
-        <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.45)', letterSpacing: '-0.1px' }}>Design System</span>
+        <span style={{ fontSize: 16, fontWeight: 600, color: '#1d1d1f', letterSpacing: '-0.3px' }}>WEHAGO 2.0 Design System</span>
+
+        {/* 상단 우측 탭 */}
+        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 20, height: HEADER_H }}>
+          {tabButton('Foundation', !isComponent, () => handleTab('foundation'))}
+          {tabButton('Components', isComponent, () => handleTab('components'))}
+        </div>
       </nav>
 
       {/* ── Mobile backdrop ── */}
@@ -122,7 +156,7 @@ export default function App() {
       <aside
         style={{
           position: 'fixed',
-          top: 44,
+          top: HEADER_H,
           left: 0,
           bottom: 0,
           width: 220,
@@ -137,11 +171,14 @@ export default function App() {
           drawerOpen ? 'translate-x-0' : '-translate-x-full'
         } md:translate-x-0`}
       >
+        {/* 활성 탭의 메뉴만 표시 */}
         <nav style={{ flex: 1, padding: '16px 10px' }}>
-          <p style={NAV_LABEL}>Foundation</p>
-          <div style={{ marginBottom: 20 }}>{foundationNames.map((name) => navButton(name, name))}</div>
-          <p style={NAV_LABEL}>Components</p>
-          <div>{componentItems.map((item) => navButton(item.id, item.label))}</div>
+          <p style={NAV_LABEL}>{isComponent ? 'Components' : 'Foundation'}</p>
+          <div>
+            {isComponent
+              ? componentItems.map((item) => navButton(item.id, item.label))
+              : foundationNames.map((name) => navButton(name, name))}
+          </div>
         </nav>
         <div style={{ padding: '14px 22px', borderTop: '1px solid #e0e0e0' }}>
           <p style={{ fontSize: 12, color: '#6e6e73', letterSpacing: '-0.1px' }}>token.json 기반 · v1.0.0</p>
@@ -149,7 +186,7 @@ export default function App() {
       </aside>
 
       {/* ── Main content ── */}
-      <main style={{ marginTop: 44 }} className="md:ml-[220px] min-h-screen overflow-x-hidden">
+      <main style={{ marginTop: HEADER_H }} className="md:ml-[220px] min-h-screen overflow-x-hidden">
         {FoundationPage ? (
           <FoundationPage />
         ) : (

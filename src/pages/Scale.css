@@ -21,30 +21,32 @@
 
 .ds-scale-label {
   font-size: 12px;
-  color: var(--text-subtle);
+  color: #333333;
+  letter-spacing: -0.3px;
   font-variant-numeric: tabular-nums;
   text-align: center;
 }
 
-/* ── Radius ── */
+/* ── Radius (Figma: box #f7f8fa+#989898, dot #719bfc+#447cfc) ── */
 .ds-radius-box {
   width: 56px;
   height: 56px;
-  background: #ffffff;
-  border: 1px solid #d0d6e5;
+  background: #f7f8fa;
+  border: 1px solid #989898;
   position: relative;
-  overflow: hidden;
 }
 
 .ds-radius-corner {
   position: absolute;
   right: 0;
   bottom: 0;
-  background: #a6c3fe;
+  background: rgba(113, 155, 252, 0.4);
+  border: 1px solid #447cfc;
+  box-sizing: border-box;
   border-radius: 50%;
 }
 
-/* ── Gap ── */
+/* ── Gap (Figma: track #e3e3e3, fill #719bfc) ── */
 .ds-gap-track {
   display: flex;
   align-items: center;
@@ -53,30 +55,34 @@
 .ds-gap-bar {
   width: 34px;
   height: 6px;
-  background: #e1e1e1;
+  background: #e3e3e3;
   border-radius: 3px;
 }
 
 .ds-gap-fill {
   height: 18px;
   min-width: 2px;
-  background: #a6c3fe;
+  background: rgba(113, 155, 252, 0.4);
   border-radius: 3px;
 }
 
-/* ── Padding ── */
+/* ── Padding (Figma: 바깥 #719bfc, 안쪽 #f7f8fa+#989898) ── */
 .ds-pad-box {
   width: 56px;
   height: 56px;
-  background: #a6c3fe;
+  background: rgba(113, 155, 252, 0.4);
   border-radius: 4px;
+  /* 파란 stroke는 기본 사각형 바깥(outside) — box-shadow 링 */
+  box-shadow: 0 0 0 1px rgba(113, 155, 252, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .ds-pad-inner {
-  background: #ffffff;
+  background: #f7f8fa;
+  border: 1px solid #989898;
+  box-sizing: border-box;
   border-radius: 2px;
 }
 
@@ -97,7 +103,7 @@
 .ds-size-bar {
   flex: 1;
   min-width: 0;
-  background: #a6c3fe;
+  background: rgba(113, 155, 252, 0.4);
   border-radius: 3px;
 }
 
@@ -105,28 +111,34 @@
   width: 120px;
   flex-shrink: 0;
   font-size: 12px;
-  color: var(--text-subtle);
+  color: #333333;
+  letter-spacing: -0.3px;
   font-variant-numeric: tabular-nums;
 }
 
-/* ── Shadow ── */
+/* ── Shadow — 흰 직사각형 + 그림자 (Figma) ── */
 .ds-shadow-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 28px 24px;
+  padding: 8px 4px 16px;
 }
 
-.ds-shadow-demo {
-  height: 110px;
+.ds-shadow-item {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ds-shadow-label {
+  font-size: 12px;
+  color: #333333;
+  letter-spacing: -0.3px;
 }
 
 .ds-shadow-box {
   width: 100%;
-  height: 84px;
+  height: 104px;
   background: #ffffff;
   border-radius: 12px;
-  border: 1px solid rgba(0, 0, 0, 0.04);
 }

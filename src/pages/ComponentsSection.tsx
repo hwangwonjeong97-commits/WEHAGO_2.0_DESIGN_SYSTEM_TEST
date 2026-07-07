@@ -16,63 +16,39 @@ import {
 
 // ─── PreviewCard ─────────────────────────────────────────────────────────────
 
+// title은 카드 밖(위)에 헤딩으로. 설명·Import 버튼은 제거. (description/importPath는 하위호환용 무시 prop)
 function PreviewCard({
   title,
-  description,
-  importPath,
   children,
 }: {
   title: string
-  description: string
-  importPath: string
+  description?: string
+  importPath?: string
   children: React.ReactNode
 }) {
-  const [showCode, setShowCode] = useState(false)
-
   return (
-    <div style={{ borderRadius: 18, border: '1px solid #e0e0e0', width: '100%', boxSizing: 'border-box', overflow: 'hidden' }}>
-      <div style={{
-        padding: '20px 24px', borderBottom: '1px solid #e0e0e0',
-        display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16,
-        background: '#ffffff', borderRadius: '18px 18px 0 0',
-      }}>
-        <div style={{ minWidth: 0, flex: 1 }}>
-          <h4 style={{ fontSize: 17, fontWeight: 600, color: '#1d1d1f', letterSpacing: '-0.3px', margin: 0 }}>{title}</h4>
-          <p style={{ fontSize: 14, color: '#6e6e73', marginTop: 4, letterSpacing: '-0.224px', lineHeight: 1.4, wordBreak: 'break-word' }}>{description}</p>
-        </div>
-        <button
-          onClick={() => setShowCode(!showCode)}
-          style={{
-            flexShrink: 0, fontSize: 14, color: '#0066cc', fontWeight: 400,
-            letterSpacing: '-0.224px', background: 'none', border: 'none', cursor: 'pointer', padding: 0,
-          }}
-        >
-          {showCode ? 'Hide' : 'Import'}
-        </button>
-      </div>
-      {showCode && (
-        <div style={{ padding: '12px 24px', borderBottom: '1px solid #e0e0e0', background: '#272729' }}>
-          <code style={{ fontSize: 13, fontFamily: 'ui-monospace, monospace', color: '#68db8b', wordBreak: 'break-all' }}>{importPath}</code>
-        </div>
-      )}
-      {/* 프리뷰 wrapper: 이 안에서만 가로 스크롤 */}
-      <div style={{ overflowX: 'auto', minWidth: 0, borderRadius: '0 0 18px 18px', background: '#F9F9F9' }}>
-        <div className="ds-component-preview" style={{
-          padding: '24px', display: 'flex', flexWrap: 'nowrap', gap: 12,
-          alignItems: 'flex-start', minHeight: 80,
-        }}>
-          {children}
+    <div style={{ width: '100%', minWidth: 0 }}>
+      <h4 style={{ fontSize: 21, fontWeight: 600, color: '#1d1d1f', letterSpacing: '-0.3px', margin: '0 0 16px' }}>{title}</h4>
+      <div style={{ borderRadius: 18, border: '1px solid #e0e0e0', width: '100%', boxSizing: 'border-box', overflow: 'hidden' }}>
+        {/* 프리뷰 wrapper: 이 안에서만 가로 스크롤 */}
+        <div style={{ overflowX: 'auto', minWidth: 0, borderRadius: 18, background: '#F9F9F9' }}>
+          <div className="ds-component-preview" style={{
+            padding: '24px', display: 'flex', flexWrap: 'nowrap', gap: 12,
+            alignItems: 'flex-start', minHeight: 80,
+          }}>
+            {children}
+          </div>
         </div>
       </div>
     </div>
   )
 }
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+// 카테고리 제목은 상단 h2로 이미 표시 → Section은 그리드만(중복 h3 제거)
+function Section({ children }: { title?: string; children: React.ReactNode }) {
   return (
     <section style={{ marginBottom: 56, width: '100%', minWidth: 0 }}>
-      <h3 style={{ fontSize: 21, fontWeight: 600, color: '#1d1d1f', letterSpacing: '-0.3px', marginBottom: 16 }}>{title}</h3>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 20, width: '100%' }}>{children}</div>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 48, width: '100%' }}>{children}</div>
     </section>
   )
 }
@@ -235,24 +211,24 @@ function BadgeDemo() {
   return (
     <PreviewCard
       title="Badge"
-      description="알림 수(BadgeNoti) · 권한(BadgeAuth) · 상태(Badge) 3가지 타입을 제공합니다. 아이콘이나 아바타와 함께 오버레이 형태로 사용합니다."
+      description="상태(Badge/State) · 권한(Badge/Role) · 알림(Badge/Noti) 타입을 제공합니다. 아이콘이나 아바타와 함께 오버레이 형태로 사용합니다."
       importPath={`import { Badge } from './components'`}
     >
       <div className="w-full space-y-4">
         <div>
-          <p className="text-body5 font-medium text-neutral-500 mb-2">BadgeNoti — 알림 카운트 (항상 빨간색)</p>
+          <p className="text-body5 font-medium text-neutral-500 mb-2">Badge/Noti — 알림 카운트 (항상 빨간색)</p>
           <div className="flex gap-3 items-center">
             <Badge variant="noti" count={3} />
-            <Badge variant="noti" count={99} max={99} />
+            <Badge variant="noti" count={100} max={99} />
             <Badge variant="noti" dot />
           </div>
         </div>
         <div>
-          <p className="text-body5 font-medium text-neutral-500 mb-2">BadgeAuth — 권한 뱃지</p>
+          <p className="text-body5 font-medium text-neutral-500 mb-2">Badge/Role — 권한 뱃지 (Master · Member · Guest)</p>
           <div className="flex gap-2 items-center">
-            <Badge variant="auth" type="master" />
-            <Badge variant="auth" type="user" />
-            <Badge variant="auth" type="guest" />
+            <Badge variant="role" type="master" />
+            <Badge variant="role" type="member" />
+            <Badge variant="role" type="guest" />
           </div>
         </div>
         <div>
@@ -1567,8 +1543,8 @@ function TableDemo() {
       header: 'title',
       width: 98,
       render: (v: unknown) => (
-        // BadgeAuth "마스터" — #ffa000, r=1000
-        <Badge variant="auth" type={v as 'master' | 'user' | 'guest'} />
+        // Badge/Role "마스터" — #ffa000, r=1000
+        <Badge variant="role" type={v as 'master' | 'member' | 'guest'} />
       ),
     },
   ]
