@@ -12,8 +12,9 @@ export { default as Button, TextButton, ButtonIcon, GhostButton } from './Button
 // ─── Display ─────────────────────────────────────────────────────────────────
 export { default as Tag } from './Tag/Tag'
 export { default as Badge } from './Badge/Badge'
-export { default as Avatar } from './Avatar/Avatar'
-export { default as Thumbnail } from './Thumbnail/Thumbnail'
+export { default as Avatar, AvatarGroup } from './Avatar/Avatar'
+export { default as FileThumbnail } from './Thumbnail/Thumbnail'
+export { default as Thumbnail } from './Thumbnail/Thumbnail' // 하위호환 alias
 export { default as ProfileCard } from './ProfileCard/ProfileCard'
 
 // ─── Navigation ──────────────────────────────────────────────────────────────
@@ -37,7 +38,9 @@ export { default as Loading, Spinner, Dots, Skeleton, Loader } from './Loading/L
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 export { CheckboxList, IconList, ProfileList, List } from './List/List'
-export { default as Table } from './Table/Table'
+export { default as Card } from './Card/Card'
+export { default as DataListTable } from './Table/Table'
+export { default as Table } from './Table/Table' // 하위호환 alias
 
 // ─── Form Layout ─────────────────────────────────────────────────────────────
 export { FormTable } from './FormTable/FormTable'

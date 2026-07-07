@@ -47,6 +47,13 @@ const DotsIcon: React.FC = () => (
   </svg>
 )
 
+// Selected 아이템 우측 체크 (Figma ic_check_thick 18×18, #105aff)
+const CheckThick: React.FC = () => (
+  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" className="flex-shrink-0 ml-auto" aria-hidden="true">
+    <path d="M14.5 5.2 7.3 12.4 3.5 8.6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+)
+
 function isAction(item: MenuItem): item is MenuAction {
   return !('type' in item) || (item as MenuAction).type === undefined
 }
@@ -130,7 +137,7 @@ const OverflowMenu: React.FC<OverflowMenuProps> = ({ items, trigger, align = 'ri
                     handleClose()
                   }
                 }}
-                style={action.selected ? { backgroundColor: 'rgba(16,90,255,0.05)' } : undefined}
+                style={action.selected ? { backgroundColor: 'rgba(16,90,255,0.06)' } : undefined}
                 className={[
                   'w-full flex items-center gap-1 h-8 px-2 rounded text-left',
                   'text-body3 transition-colors duration-100',
@@ -148,6 +155,7 @@ const OverflowMenu: React.FC<OverflowMenuProps> = ({ items, trigger, align = 'ri
                   </span>
                 )}
                 <span>{action.label}</span>
+                {action.selected && <CheckThick />}
               </button>
             )
           })}

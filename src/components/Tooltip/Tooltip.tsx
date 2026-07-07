@@ -16,45 +16,46 @@ interface TooltipProps {
 
 const arrowBase = 'absolute w-0 h-0 pointer-events-none';
 
+// Figma 화살표: 15×4 (Top/Bottom), 색 #222222
 const arrowStyles: Record<TooltipPlacement, { wrapper: string; arrow: string }> = {
   top: {
-    wrapper: 'bottom-full left-1/2 -translate-x-1/2 mb-2',
+    wrapper: 'bottom-full left-1/2 -translate-x-1/2 mb-1.5',
     arrow: [
       arrowBase,
       'top-full left-1/2 -translate-x-1/2',
-      'border-l-[5px] border-l-transparent',
-      'border-r-[5px] border-r-transparent',
-      'border-t-[5px] border-t-secondary-900',
+      'border-l-[7.5px] border-l-transparent',
+      'border-r-[7.5px] border-r-transparent',
+      'border-t-[4px] border-t-[#222222]',
     ].join(' '),
   },
   bottom: {
-    wrapper: 'top-full left-1/2 -translate-x-1/2 mt-2',
+    wrapper: 'top-full left-1/2 -translate-x-1/2 mt-1.5',
     arrow: [
       arrowBase,
       'bottom-full left-1/2 -translate-x-1/2',
-      'border-l-[5px] border-l-transparent',
-      'border-r-[5px] border-r-transparent',
-      'border-b-[5px] border-b-secondary-900',
+      'border-l-[7.5px] border-l-transparent',
+      'border-r-[7.5px] border-r-transparent',
+      'border-b-[4px] border-b-[#222222]',
     ].join(' '),
   },
   left: {
-    wrapper: 'right-full top-1/2 -translate-y-1/2 mr-2',
+    wrapper: 'right-full top-1/2 -translate-y-1/2 mr-1.5',
     arrow: [
       arrowBase,
       'left-full top-1/2 -translate-y-1/2',
-      'border-t-[5px] border-t-transparent',
-      'border-b-[5px] border-b-transparent',
-      'border-l-[5px] border-l-secondary-900',
+      'border-t-[7.5px] border-t-transparent',
+      'border-b-[7.5px] border-b-transparent',
+      'border-l-[4px] border-l-[#222222]',
     ].join(' '),
   },
   right: {
-    wrapper: 'left-full top-1/2 -translate-y-1/2 ml-2',
+    wrapper: 'left-full top-1/2 -translate-y-1/2 ml-1.5',
     arrow: [
       arrowBase,
       'right-full top-1/2 -translate-y-1/2',
-      'border-t-[5px] border-t-transparent',
-      'border-b-[5px] border-b-transparent',
-      'border-r-[5px] border-r-secondary-900',
+      'border-t-[7.5px] border-t-transparent',
+      'border-b-[7.5px] border-b-transparent',
+      'border-r-[4px] border-r-[#222222]',
     ].join(' '),
   },
 };

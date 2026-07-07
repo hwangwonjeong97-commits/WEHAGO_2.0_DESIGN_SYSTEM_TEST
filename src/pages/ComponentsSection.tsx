@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import {
   Button, TextButton, ButtonIcon, GhostButton,
-  Tag, Badge, Avatar,
+  Tag, Badge, Avatar, AvatarGroup,
   Input, TextArea, SearchBar, Dropdown, Checkbox, Radio, Toggle, DateTimeInput,
   Tab, Dialog, Snackbar, SnackbarProvider, useSnackbar, Tooltip,
   InfoBox, EmptySet, Loader,
-  Thumbnail, FileUpload, OverflowMenu, ActionBar, Picker,
-  CheckboxList, IconList, ProfileList, Table, FormTable, ProfileCard, Header, LNB, SNB, SidePanel,
+  FileThumbnail, FileUpload, OverflowMenu, ActionBar, Picker,
+  CheckboxList, IconList, ProfileList, DataListTable, FormTable, ProfileCard, Header, LNB, SNB, SidePanel, Card,
 } from '../components'
 import { FileUploadBar } from '../components/FileUpload/FileUpload'
 import {
@@ -203,7 +203,7 @@ function ButtonDemo() {
 function TagDemo() {
   return (
     <PreviewCard
-      title="Tag / TagUser"
+      title="Tag"
       description="콘텐츠 분류 레이블로 md(24px) · sm(20px) 크기를 제공합니다. 삭제 버튼과 아바타를 포함할 수 있습니다."
       importPath={`import { Tag } from './components'`}
     >
@@ -221,7 +221,7 @@ function TagDemo() {
           <p className="text-body5 font-medium text-neutral-500 mb-2">TagUser — Avatar + 텍스트</p>
           <div className="flex flex-wrap gap-2">
             <Tag size="md" avatar={<Avatar name="황원정" size="18" src="https://i.pravatar.cc/48?img=5" />} onRemove={() => {}}>#태그</Tag>
-            <Tag size="md" avatar={<Avatar name="김철수" size="18" src="https://i.pravatar.cc/48?img=12" />}>#멘션</Tag>
+            <Tag size="md" avatar={<Avatar name="김철수" size="18" src="/Profile-image.png" />}>#멘션</Tag>
           </div>
         </div>
       </div>
@@ -272,34 +272,63 @@ function BadgeDemo() {
 // ─── Avatar ───────────────────────────────────────────────────────────────────
 
 function AvatarDemo() {
-  // 10가지 사이즈: px값, size key, Figma radius
+  // Figma Avatar/Default 5 사이즈
   const sizes: Array<{ key: string; label: string }> = [
-    { key: '18', label: '18' },
-    { key: 'xs', label: '24' },
-    { key: 'sm', label: '32' },
-    { key: '36', label: '36' },
-    { key: 'md', label: '40' },
-    { key: '44', label: '44' },
-    { key: 'lg', label: '48' },
-    { key: '52', label: '52' },
-    { key: 'xl', label: '56' },
-    { key: '60', label: '60' },
+    { key: 'xsmall', label: 'XSmall 18' },
+    { key: 'small',  label: 'Small 20' },
+    { key: 'medium', label: 'Medium 32' },
+    { key: 'large',  label: 'Large 40' },
+    { key: 'xlarge', label: 'XLarge 52' },
+  ]
+  const people = [
+    { src: '/Profile-image.png', name: '김더존' },
+    { src: 'https://i.pravatar.cc/64?img=5',  name: '이영희' },
+    { src: 'https://i.pravatar.cc/64?img=11', name: '박민준' },
+    { src: 'https://i.pravatar.cc/64?img=8',  name: '최수빈' },
+    { src: 'https://i.pravatar.cc/64?img=15', name: '정하늘' },
+    { src: 'https://i.pravatar.cc/64?img=20', name: '한지우' },
   ]
 
   return (
     <PreviewCard
       title="Avatar"
-      description="18~60px 10가지 크기를 지원하며 이미지, 이니셜, 온라인 상태 표시가 가능합니다."
-      importPath={`import { Avatar } from './components'`}
+      description="Image · Empty · 온라인/오프라인 상태를 지원하며 XSmall(18)~XLarge(52) 5가지 크기를 제공합니다. AvatarGroup으로 여러 명을 겹쳐 표시할 수 있습니다."
+      importPath={`import { Avatar, AvatarGroup } from './components'`}
     >
-      <div className="w-full">
-        <div className="flex flex-wrap gap-4 items-end">
-          {sizes.map(({ key, label }) => (
-            <div key={key} className="flex flex-col items-center gap-1.5">
-              <Avatar size={key as 'xs'} />
-              <span className="text-body6 text-neutral-500">{label}</span>
-            </div>
-          ))}
+      <div className="w-full space-y-6">
+        {/* Default — 5 sizes */}
+        <div>
+          <p className="text-body5 font-medium text-neutral-500 mb-2">Default (Image)</p>
+          <div className="flex flex-wrap gap-4 items-end">
+            {sizes.map(({ key, label }) => (
+              <div key={key} className="flex flex-col items-center gap-1.5">
+                <Avatar size={key as 'medium'} src="/Profile-image.png" name="김더존" />
+                <span className="text-body6 text-neutral-500">{label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Empty + 온라인/오프라인 */}
+        <div>
+          <p className="text-body5 font-medium text-neutral-500 mb-2">Empty · 온라인 상태</p>
+          <div className="flex flex-wrap gap-4 items-center">
+            <Avatar size="large" />
+            <Avatar size="large" src="/Memoji.png" name="김더존" online />
+            <Avatar size="large" src="/Profile-image.png" name="김더존" online />
+            <Avatar size="large" src="/Profile-image.png" name="김더존" online={false} />
+          </div>
+        </div>
+
+        {/* MultiGroup */}
+        <div>
+          <p className="text-body5 font-medium text-neutral-500 mb-2">AvatarGroup — Multi(클러스터) · Group(+N)</p>
+          <div className="flex flex-wrap gap-6 items-center">
+            <AvatarGroup type="multi" size="medium" avatars={people.slice(0, 2)} />
+            <AvatarGroup type="multi" size="medium" avatars={people.slice(0, 3)} />
+            <AvatarGroup type="multi" size="medium" avatars={people.slice(0, 4)} />
+            <AvatarGroup type="group" size="medium" avatars={people} max={4} />
+          </div>
         </div>
       </div>
     </PreviewCard>
@@ -936,7 +965,7 @@ function EmptySetDemo() {
       <div className="w-full flex flex-wrap gap-8 justify-center">
         <div className="flex flex-col items-center">
           <p className="text-body5 text-neutral-500 mb-2">Medium</p>
-          <EmptySet size="md" description={'검색결과가 없습니다.\n검색어를 다시 확인해주세요.'} action={<Button variant="secondary" size="sm">새로 만들기</Button>} />
+          <EmptySet size="md" description={'검색결과가 없습니다.\n검색어를 다시 확인해주세요.'} />
         </div>
         <div className="flex flex-col items-center">
           <p className="text-body5 text-neutral-500 mb-2">Small</p>
@@ -979,26 +1008,26 @@ function LoadingDemo() {
 function ThumbnailDemo() {
   return (
     <PreviewCard
-      title="Thumbnail (FileThumbnail)"
-      description="이미지나 파일을 미리보기 형태로 표시합니다. default · selected · hovered · file · warning 상태를 지원합니다."
-      importPath={`import { Thumbnail } from './components'`}
+      title="FileThumbnail"
+      description="이미지나 파일을 미리보기 형태로 표시합니다. Default · Hovered · Selected 상태와 Thumbnail · File · Warning 프리뷰를 지원합니다. 마우스를 올리면 액션바가 나타나고, 체크박스를 클릭하면 선택됩니다."
+      importPath={`import { FileThumbnail } from './components'`}
     >
       <div className="grid gap-4" style={{ gridTemplateColumns: 'repeat(2, 190px)' }}>
         <div>
-          <p className="text-body5 text-neutral-500 mb-1.5">Default (이미지)</p>
-          <Thumbnail filename="프레젠테이션" extension=".pptx" author="김더존" fileSize="16MB" selectable />
+          <p className="text-body5 text-neutral-500 mb-1.5">Default (hover·클릭 선택)</p>
+          <FileThumbnail filename="프레젠테이션" extension=".pptx" author="김더존" fileSize="16MB" selectable onExport={() => {}} onDownload={() => {}} onDelete={() => {}} />
         </div>
         <div>
           <p className="text-body5 text-neutral-500 mb-1.5">Selected</p>
-          <Thumbnail state="selected" filename="보고서" extension=".pdf" author="이영희" fileSize="4MB" selectable selected />
+          <FileThumbnail state="selected" filename="보고서" extension=".pdf" author="이영희" fileSize="4MB" selectable selected />
         </div>
         <div>
           <p className="text-body5 text-neutral-500 mb-1.5">File (아이콘)</p>
-          <Thumbnail state="file" fileType="PDF" filename="AI 에이전트 혁신" extension=".pdf" author="박민준" fileSize="2MB" selectable />
+          <FileThumbnail state="file" fileType="PDF" filename="AI 에이전트 혁신" extension=".pdf" author="박민준" fileSize="2MB" selectable />
         </div>
         <div>
           <p className="text-body5 text-neutral-500 mb-1.5">Warning</p>
-          <Thumbnail state="warning" filename="손상된 파일" extension=".xlsx" author="김더존" fileSize="8MB" selectable />
+          <FileThumbnail state="warning" filename="손상된 파일" extension=".xlsx" author="김더존" fileSize="8MB" selectable />
         </div>
       </div>
     </PreviewCard>
@@ -1356,7 +1385,7 @@ function ListDemo() {
   ])
   const [profileItems, setProfileItems] = useState([
     { id: '1', label: '텍스트 길어지면 말줄임 표시합니다. 말줄임', avatarName: '황원정', avatarSrc: 'https://i.pravatar.cc/48?img=5',  isMe: true,  role: 'master' as const },
-    { id: '2', label: 'list item', avatarName: '김철수', avatarSrc: 'https://i.pravatar.cc/48?img=12', isMe: false, role: 'user'   as const },
+    { id: '2', label: 'list item', avatarName: '김철수', avatarSrc: '/Profile-image.png', isMe: false, role: 'user'   as const },
     { id: '3', label: 'list item', avatarName: '이영희', avatarSrc: 'https://i.pravatar.cc/48?img=9',  isMe: false, role: 'user'   as const },
     { id: '4', label: 'list item', avatarName: '박민준', avatarSrc: 'https://i.pravatar.cc/48?img=11', isMe: false, role: 'user'   as const },
     { id: '5', label: 'list item', avatarName: '최지수', avatarSrc: 'https://i.pravatar.cc/48?img=15', isMe: false, role: 'user'   as const },
@@ -1440,6 +1469,35 @@ const IcCheckCircle: React.FC = () => (
   </svg>
 )
 
+// ─── CardDemo ────────────────────────────────────────────────────────────────
+
+function CardDemo() {
+  return (
+    <PreviewCard
+      title="Card"
+      description="목록형 카드입니다. ListCardSingle · ListCardDouble 타입과 Default · Reorder 상태를 제공합니다."
+      importPath={`import { Card } from './components'`}
+    >
+      <div className="w-full space-y-4">
+        <div>
+          <p className="text-body5 font-medium text-neutral-500 mb-2">ListCardSingle — Default · Reorder</p>
+          <div className="space-y-2 max-w-[360px]">
+            <Card type="single" label="card list item" />
+            <Card type="single" state="reorder" label="card list item" />
+          </div>
+        </div>
+        <div>
+          <p className="text-body5 font-medium text-neutral-500 mb-2">ListCardDouble — Default · Reorder</p>
+          <div className="space-y-2 max-w-[360px]">
+            <Card type="double" />
+            <Card type="double" state="reorder" />
+          </div>
+        </div>
+      </div>
+    </PreviewCard>
+  )
+}
+
 // ─── TableDemo ────────────────────────────────────────────────────────────────
 
 function TableDemo() {
@@ -1448,7 +1506,7 @@ function TableDemo() {
   const [rows1, setRows1] = useState([
     { id: '1', fav: true,  name: '김더존', avatar: 'https://i.pravatar.cc/48?img=11', content: '텍스트 길어지면 말줄임 표시합니다. 말줄임', col3: 'List Table', col4: 'List Table', role: 'master' as const },
     { id: '2', fav: false, name: '이영희', avatar: 'https://i.pravatar.cc/48?img=5',  content: '텍스트 길어지면 말줄임 표시합니다. 말줄임', col3: 'List Table', col4: 'List Table', role: 'master' as const },
-    { id: '3', fav: false, name: '박민준', avatar: 'https://i.pravatar.cc/48?img=12', content: '텍스트 길어지면 말줄임 표시합니다. 말줄임', col3: 'List Table', col4: 'List Table', role: 'master' as const },
+    { id: '3', fav: false, name: '박민준', avatar: '/Profile-image.png', content: '텍스트 길어지면 말줄임 표시합니다. 말줄임', col3: 'List Table', col4: 'List Table', role: 'master' as const },
     { id: '4', fav: false, name: '최지수', avatar: 'https://i.pravatar.cc/48?img=9',  content: '텍스트 길어지면 말줄임 표시합니다. 말줄임', col3: 'List Table', col4: 'List Table', role: 'master' as const },
     { id: '5', fav: false, name: '정우성', avatar: 'https://i.pravatar.cc/48?img=15', content: '텍스트 길어지면 말줄임 표시합니다. 말줄임', col3: 'List Table', col4: 'List Table', role: 'master' as const },
   ])
@@ -1458,7 +1516,7 @@ function TableDemo() {
   const [rows2, setRows2] = useState([
     { id: '1', date: '26.03.19(월) 11:12', title: 'List Table List Table List Table List Table List Table List Table List Table', dateSub: 'subtext', timeSub: 'subtext', title2: 'List Table List Table List Table List Table List Table List Table List Table', dateSub2: 'subtext', timeSub2: 'subtext', author: '김더존', avatar: 'https://i.pravatar.cc/64?img=11', authorSub: 'subtext subtext subtext subtext', status: 'List Table (5/7)' },
     { id: '2', date: '26.03.19(월) 11:12', title: 'List Table List Table List Table List Table List Table List Table List Table', dateSub: 'subtext', timeSub: 'subtext', title2: 'List Table List Table List Table List Table List Table List Table List Table', dateSub2: 'subtext', timeSub2: 'subtext', author: '이영희', avatar: 'https://i.pravatar.cc/64?img=5',  authorSub: 'subtext subtext subtext subtext', status: 'List Table (5/7)' },
-    { id: '3', date: '26.03.19(월) 11:12', title: 'List Table List Table List Table List Table List Table List Table List Table', dateSub: 'subtext', timeSub: 'subtext', title2: 'List Table List Table List Table List Table List Table List Table List Table', dateSub2: 'subtext', timeSub2: 'subtext', author: '박민준', avatar: 'https://i.pravatar.cc/64?img=12', authorSub: 'subtext subtext subtext subtext', status: 'List Table (5/7)' },
+    { id: '3', date: '26.03.19(월) 11:12', title: 'List Table List Table List Table List Table List Table List Table List Table', dateSub: 'subtext', timeSub: 'subtext', title2: 'List Table List Table List Table List Table List Table List Table List Table', dateSub2: 'subtext', timeSub2: 'subtext', author: '박민준', avatar: '/Profile-image.png', authorSub: 'subtext subtext subtext subtext', status: 'List Table (5/7)' },
     { id: '4', date: '26.03.19(월) 11:12', title: 'List Table List Table List Table List Table List Table List Table List Table', dateSub: 'subtext', timeSub: 'subtext', title2: 'List Table List Table List Table List Table List Table List Table List Table', dateSub2: 'subtext', timeSub2: 'subtext', author: '최지수', avatar: 'https://i.pravatar.cc/64?img=9',  authorSub: 'subtext subtext subtext subtext', status: 'List Table (5/7)' },
   ])
 
@@ -1598,16 +1656,16 @@ function TableDemo() {
 
   return (
     <PreviewCard
-      title="Table"
+      title="DataListTable"
       description="행과 열로 구성된 데이터 표입니다. 정렬 · 선택 · 삭제 기능을 제공하며 compact · tall 두 가지 행 높이를 지원합니다."
-      importPath={`import { Table } from './components'`}
+      importPath={`import { DataListTable } from './components'`}
     >
       <div className="w-full space-y-6">
         {/* ── Table 1: compact ── */}
         <div>
           <p className="text-body5 font-medium text-neutral-500 mb-2">Compact</p>
           <div className="bg-white rounded-xl border border-secondary-100 overflow-x-auto">
-            <Table
+            <DataListTable
               columns={columns1}
               data={rows1}
               selectable
@@ -1624,7 +1682,7 @@ function TableDemo() {
         <div>
           <p className="text-body5 font-medium text-neutral-500 mb-2">Tall</p>
           <div className="bg-white rounded-xl border border-secondary-100 overflow-x-auto">
-            <Table
+            <DataListTable
               columns={columns2}
               data={rows2}
               selectable
@@ -1766,7 +1824,7 @@ function FormTableDemo() {
                         {/* Avatar size="18" (18×18 r=6) — 피그마 실측 */}
                         <Tag size="sm" avatar={<Avatar name="김더존" src="https://i.pravatar.cc/48?img=11" size="18" />} onRemove={() => {}}>김더존</Tag>
                         <Tag size="sm" avatar={<Avatar name="이영희" src="https://i.pravatar.cc/48?img=5"  size="18" />} onRemove={() => {}}>이영희</Tag>
-                        <Tag size="sm" avatar={<Avatar name="박민준" src="https://i.pravatar.cc/48?img=12" size="18" />} onRemove={() => {}}>박민준</Tag>
+                        <Tag size="sm" avatar={<Avatar name="박민준" src="/Profile-image.png" size="18" />} onRemove={() => {}}>박민준</Tag>
                       </div>
                       {/* ButtonIcon 32×32, bg=#fff, stroke=#b4b4b4, r=6 — ic_tree 피그마 원본 */}
                       <button type="button" className="shrink-0 flex items-center justify-center rounded-md border border-[#b4b4b4] bg-white hover:bg-secondary-50 transition-colors" style={{ width: 32, height: 32 }}>
@@ -1790,12 +1848,12 @@ function ProfileCardDemo() {
   return (
     <PreviewCard
       title="ProfileCard"
-      description="사용자 프로필을 카드 형태로 표시합니다. 이름 · 직급 · 부서 등의 정보를 담으며 Default · Large 두 가지 크기를 제공합니다."
+      description="사용자 프로필을 카드 형태로 표시합니다. 이름 · 직급 · 부서 등의 정보를 담으며 Horizontal · Vertical 두 가지 타입을 제공합니다."
       importPath={`import { ProfileCard } from './components'`}
     >
       <div className="flex flex-wrap gap-4 items-start">
         <ProfileCard
-          variant="default"
+          variant="horizontal"
           name="황원정" title="사원"
           department="더존비즈온 > 플랫폼사업부문 > 서비스기획3Cell"
           phone="02-6233-0000"
@@ -1804,7 +1862,7 @@ function ProfileCardDemo() {
           onMessage={() => {}} onChat={() => {}} onEmail={() => {}}
         />
         <ProfileCard
-          variant="large"
+          variant="vertical"
           name="김철수" title="대리"
           department="더존비즈온 > 개발팀 > 프론트엔드Unit"
           phone="02-6233-1111"
@@ -1928,7 +1986,7 @@ function HeaderVariant({ label, children }: { label: string; children: React.Rea
 }
 
 function HeaderDemo() {
-  const avatar = <HeaderAvatar name="김더존" src="https://i.pravatar.cc/32?img=12" />
+  const avatar = <HeaderAvatar name="김더존" src="/Profile-image.png" />
   return (
     <PreviewCard
       title="Header"
@@ -2341,6 +2399,7 @@ export default function ComponentsSection({ category }: { category: ComponentCat
           <TooltipDemo />
           <OverflowMenuDemo />
           <ListDemo />
+          <CardDemo />
           <TableDemo />
           <FormTableDemo />
           <InfoBoxDemo />

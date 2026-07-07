@@ -118,7 +118,8 @@ const ROW_H: Record<string, number> = { compact: 40, default: 48, tall: 64 };
 
 // ─── Table ────────────────────────────────────────────────────────────────────
 
-export function Table<T extends Record<string, unknown> = Record<string, unknown>>({
+// Figma 컴포넌트명: DataListTable (Table은 하위호환 alias)
+export function DataListTable<T extends Record<string, unknown> = Record<string, unknown>>({
   columns,
   data,
   selectable = false,
@@ -170,19 +171,19 @@ export function Table<T extends Record<string, unknown> = Record<string, unknown
       {/* table-layout:fixed + column widths → truncation works */}
       <table className="w-full border-collapse" style={{ tableLayout: 'fixed' }}>
         <colgroup>
-          {selectable && <col style={{ width: 30 }} />}
+          {selectable && <col style={{ width: 44 }} />}
           {columns.map(col => (
             <col key={col.key} style={{ width: col.width ?? 'auto' }} />
           ))}
-          {onDelete && <col style={{ width: 30 }} />}
+          {onDelete && <col style={{ width: 44 }} />}
         </colgroup>
 
         {/* Header — bg:#f7f8fa(neutral-30), h:28px, text:12px #777777 */}
         <thead className="sticky top-0 z-10 bg-neutral-30">
           <tr style={{ height: 28, borderBottom: '1px solid #e1e1e1' }}>
             {selectable && (
-              <th className="px-2" style={{ verticalAlign: 'middle' }}>
-                <div className="flex items-center justify-center">
+              <th className="pl-4" style={{ verticalAlign: 'middle' }}>
+                <div className="flex items-center justify-start">
                   <Checkbox
                     checked={isAllSelected}
                     indeterminate={isIndeterminate}
@@ -239,8 +240,8 @@ export function Table<T extends Record<string, unknown> = Record<string, unknown
                 className={!isSelected ? 'hover:bg-black/[0.03] transition-colors' : ''}
               >
                 {selectable && (
-                  <td className="px-2 overflow-hidden" style={{ verticalAlign: 'middle' }}>
-                    <div className="flex items-center justify-center">
+                  <td className="pl-4 overflow-hidden" style={{ verticalAlign: 'middle' }}>
+                    <div className="flex items-center justify-start">
                       <Checkbox
                         checked={isSelected}
                         onChange={checked => handleRowCheck(row, checked)}
@@ -268,7 +269,7 @@ export function Table<T extends Record<string, unknown> = Record<string, unknown
                   <td className="overflow-hidden" style={{ verticalAlign: 'middle' }}>
                     <div
                       className="flex items-center justify-end"
-                      style={{ height: rh, paddingRight: 8 }}
+                      style={{ height: rh, paddingRight: 16 }}
                     >
                       <button
                         type="button"
@@ -290,4 +291,5 @@ export function Table<T extends Record<string, unknown> = Record<string, unknown
   );
 }
 
-export default Table;
+export { DataListTable as Table };
+export default DataListTable;

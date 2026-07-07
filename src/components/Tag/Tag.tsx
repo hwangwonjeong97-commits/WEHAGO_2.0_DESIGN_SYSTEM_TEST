@@ -34,7 +34,9 @@ export const Tag = forwardRef<HTMLSpanElement, TagProps>(
       <span
         ref={ref}
         className={[
+          // State=Default: bg #f4f4f4(secondary-50) · State=Hovered: bg rgba(0,0,0,0.03)
           'inline-flex items-center rounded bg-secondary-50 text-secondary-800 select-none',
+          'hover:bg-black/[0.03] transition-colors',
           wrap,
           className,
         ].filter(Boolean).join(' ')}

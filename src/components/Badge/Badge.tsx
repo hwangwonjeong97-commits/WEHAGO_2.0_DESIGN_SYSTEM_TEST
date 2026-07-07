@@ -71,18 +71,21 @@ const authConfig = {
   guest:  { bg: 'bg-[#98a4b4]', label: '게스트', Icon: IcLink,       arrow: false },
 }
 
-// Figma Badge/State 정확 스펙 (bg / text 색)
+// Figma Badge/State 정확 스펙 (bg / text 색 / 아이콘 색)
+// 아이콘은 Negative 제외 텍스트와 다른 색 (color/icon/* 변수):
+//   default→disabled(secondary.400 #b4b4b4) · info→primary-light(primary.300 #719bfc)
+//   positive→success(positive.400 #27c36f) · negative→텍스트와 동일(#fa4553)
 const labelStyles = {
-  default:  { bg: 'bg-[#f4f4f4]', text: 'text-[#777777]' },
-  info:     { bg: 'bg-[#eff4ff]', text: 'text-[#105aff]' },
-  positive: { bg: 'bg-[#daf9e1]', text: 'text-[#007e47]' },
-  negative: { bg: 'bg-[#ffe8ea]', text: 'text-[#fa4553]' },
+  default:  { bg: 'bg-[#f4f4f4]', text: 'text-[#777777]', icon: '#b4b4b4' },
+  info:     { bg: 'bg-[#eff4ff]', text: 'text-[#105aff]', icon: '#719bfc' },
+  positive: { bg: 'bg-[#daf9e1]', text: 'text-[#007e47]', icon: '#27c36f' },
+  negative: { bg: 'bg-[#ffe8ea]', text: 'text-[#fa4553]', icon: '#fa4553' },
 }
 
-// ic_add 14×14 — Figma 원본 (currentColor로 상태색 상속)
-const IcAdd14: React.FC = () => (
+// ic_add 14×14 — Figma 원본 (상태별 아이콘 색)
+const IcAdd14: React.FC<{ color: string }> = ({ color }) => (
   <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-    <path d="M6.99999 1.16699C7.24161 1.16699 7.43749 1.36287 7.43749 1.60449V6.56226H12.3953C12.6369 6.56226 12.8328 6.75813 12.8328 6.99976C12.8328 7.24138 12.6369 7.43726 12.3953 7.43726H7.43749V12.3956C7.43749 12.6372 7.24161 12.8331 6.99999 12.8331C6.75837 12.8331 6.56249 12.6372 6.56249 12.3956V7.43726H1.60416C1.36253 7.43726 1.16666 7.24138 1.16666 6.99976C1.16666 6.75813 1.36253 6.56226 1.60416 6.56226H6.56249V1.60449C6.56249 1.36287 6.75837 1.16699 6.99999 1.16699Z" fill="currentColor" />
+    <path d="M6.99999 1.16699C7.24161 1.16699 7.43749 1.36287 7.43749 1.60449V6.56226H12.3953C12.6369 6.56226 12.8328 6.75813 12.8328 6.99976C12.8328 7.24138 12.6369 7.43726 12.3953 7.43726H7.43749V12.3956C7.43749 12.6372 7.24161 12.8331 6.99999 12.8331C6.75837 12.8331 6.56249 12.6372 6.56249 12.3956V7.43726H1.60416C1.36253 7.43726 1.16666 7.24138 1.16666 6.99976C1.16666 6.75813 1.36253 6.56226 1.60416 6.56226H6.56249V1.60449C6.56249 1.36287 6.75837 1.16699 6.99999 1.16699Z" fill={color} />
   </svg>
 )
 
@@ -165,7 +168,7 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>((props, ref) => {
       ].join(' ')}
       {...(rest as HTMLAttributes<HTMLSpanElement>)}
     >
-      <IcAdd14 />
+      <IcAdd14 color={s.icon} />
       <span>{label}</span>
     </span>
   )

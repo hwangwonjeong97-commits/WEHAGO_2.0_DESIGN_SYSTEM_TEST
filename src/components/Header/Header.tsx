@@ -231,7 +231,7 @@ export const HeaderIconButton: React.FC<{
 export const HeaderAvatar: React.FC<{ name?: string; src?: string }> = ({ name = '', src }) => (
   <div className="w-8 h-8 rounded-xl overflow-hidden border border-black/[0.06] flex-shrink-0">
     <img
-      src={src || `https://i.pravatar.cc/32?img=12`}
+      src={src || `/Profile-image.png`}
       alt={name || '프로필'}
       className="w-full h-full object-cover"
     />

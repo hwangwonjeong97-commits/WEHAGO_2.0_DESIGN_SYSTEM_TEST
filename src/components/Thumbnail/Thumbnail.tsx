@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 // ─── Figma FileThumbnail — 정확한 측정값 ─────────────────────────────────────
 // 외부 컨테이너: 190×161, r:12
@@ -96,37 +96,50 @@ const CheckboxSingle: React.FC<{ checked: boolean }> = ({ checked }) =>
   )
 
 // ─── Action bar (Hovered state) ───────────────────────────────────────────────
-// h:26, bg rgba(0,0,0,0.4), 하단 중앙
+// h:26, bg rgba(0,0,0,0.4), 하단 우측(Figma)
 
 const HoverActionBar: React.FC<{
   onExport?: () => void
   onDownload?: () => void
   onDelete?: () => void
 }> = ({ onExport, onDownload, onDelete }) => (
-  <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex items-center bg-black/40 rounded h-[26px] px-2 gap-0">
+  <div className="absolute bottom-1.5 right-1.5 flex items-center bg-black/40 rounded h-[26px] px-2 gap-0">
     {onExport && (
-      <button type="button" onClick={onExport} className="flex items-center justify-center w-[18px] h-[18px] text-white hover:opacity-80" aria-label="내보내기">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 9v3h10V9M7 1v7M4 4l3-3 3 3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+      <button type="button" onClick={onExport} className="flex items-center justify-center w-[18px] h-[18px] hover:opacity-80" aria-label="내보내기">
+        {/* Figma 원본 ic_export 18×18 (white) */}
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <path d="M9.99023 3.52515C10.3008 3.52527 10.5527 3.77706 10.5527 4.08765C10.5527 4.39823 10.3008 4.65002 9.99023 4.65015H4.46265C3.86204 4.65015 3.375 5.13718 3.375 5.73779V13.5374C3.375 14.138 3.86204 14.625 4.46265 14.625H12.2622C12.8628 14.625 13.3499 14.138 13.3499 13.5374V7.89771C13.3499 7.58709 13.6018 7.33528 13.9124 7.33521C14.223 7.33521 14.4749 7.58704 14.4749 7.89771V13.5374C14.4749 14.7593 13.4841 15.75 12.2622 15.75H4.46265C3.24072 15.75 2.25 14.7593 2.25 13.5374V5.73779C2.25 4.51586 3.24072 3.52515 4.46265 3.52515H9.99023Z" fill="white"/>
+          <path d="M15.9397 1.5C15.9734 1.5 16.0065 1.50309 16.0386 1.50879C16.0611 1.513 16.0705 1.51724 16.0803 1.51978C16.1052 1.52621 16.1303 1.53257 16.1543 1.54248C16.192 1.55807 16.2274 1.57803 16.2605 1.60107C16.2874 1.61983 16.3134 1.64079 16.3374 1.66479C16.3737 1.70109 16.4017 1.7424 16.426 1.78491C16.4377 1.80527 16.4499 1.82531 16.459 1.84717C16.4745 1.88466 16.4856 1.92345 16.4927 1.96289C16.4985 1.99526 16.5022 2.02846 16.5022 2.0625V6.9895C16.502 7.30004 16.2503 7.552 15.9397 7.552C15.6293 7.55185 15.3773 7.29994 15.3772 6.9895V3.42041L8.8374 9.96021C8.61775 10.1799 8.26167 10.1798 8.04199 9.96021C7.82232 9.74053 7.82232 9.38446 8.04199 9.16479L14.5818 2.625H10.9285C10.6178 2.625 10.366 2.37316 10.366 2.0625C10.366 1.75184 10.6178 1.5 10.9285 1.5H15.9397Z" fill="white"/>
+        </svg>
       </button>
     )}
-    {onExport && onDownload && <div className="w-px h-3 bg-white/40 mx-1"/>}
+    {onExport && onDownload && <div className="w-px h-3 bg-white/40 mx-2"/>}
     {onDownload && (
-      <button type="button" onClick={onDownload} className="flex items-center justify-center w-[18px] h-[18px] text-white hover:opacity-80" aria-label="다운로드">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 9v3h10V9M7 1v7M4 8l3 3 3-3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+      <button type="button" onClick={onDownload} className="flex items-center justify-center w-[18px] h-[18px] hover:opacity-80" aria-label="다운로드">
+        {/* Figma 원본 ic_download 18×18 (white) */}
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <path d="M15.1875 10.875C15.4982 10.875 15.75 11.1268 15.75 11.4375V13.5374C15.75 14.7593 14.7593 15.75 13.5374 15.75H4.46265C3.27899 15.75 2.31232 14.8205 2.25293 13.6516L2.25 13.5374V11.4375C2.25 11.1268 2.50184 10.875 2.8125 10.875C3.12316 10.875 3.375 11.1268 3.375 11.4375V13.5374L3.38086 13.6487C3.43656 14.1971 3.89958 14.625 4.46265 14.625H13.5374C14.138 14.625 14.625 14.138 14.625 13.5374V11.4375C14.625 11.1268 14.8768 10.875 15.1875 10.875Z" fill="white"/>
+          <path d="M9 2.25C9.31066 2.25 9.5625 2.50184 9.5625 2.8125V10.8296L11.6023 8.78979C11.822 8.57012 12.178 8.57012 12.3977 8.78979C12.6173 9.00947 12.6174 9.36555 12.3977 9.58521L9.45044 12.5325C9.43858 12.5443 9.42561 12.5547 9.41309 12.5654C9.31024 12.6778 9.16432 12.75 9 12.75C8.83551 12.75 8.68904 12.678 8.58618 12.5654C8.5738 12.5548 8.56129 12.5442 8.54956 12.5325L5.60229 9.58521C5.38262 9.36554 5.38262 9.00946 5.60229 8.78979C5.82196 8.57012 6.17804 8.57012 6.39771 8.78979L8.4375 10.8296V2.8125C8.4375 2.50184 8.68934 2.25 9 2.25Z" fill="white"/>
+        </svg>
       </button>
     )}
-    {onDownload && onDelete && <div className="w-px h-3 bg-white/40 mx-1"/>}
+    {onDownload && onDelete && <div className="w-px h-3 bg-white/40 mx-2"/>}
     {onDelete && (
-      <button type="button" onClick={onDelete} className="flex items-center justify-center w-[18px] h-[18px] text-white hover:opacity-80" aria-label="삭제">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 3.5h10M5 3.5V2h4v1.5M5.5 5.5v5M8.5 5.5v5M3 3.5l.5 8.5h7l.5-8.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+      <button type="button" onClick={onDelete} className="flex items-center justify-center w-[18px] h-[18px] hover:opacity-80" aria-label="삭제">
+        {/* Figma 원본 ic_trash 18×18 (white) */}
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <path d="M7.5 7.3125C7.81066 7.3125 8.0625 7.56434 8.0625 7.875V12.375C8.0625 12.6857 7.81066 12.9375 7.5 12.9375C7.18934 12.9375 6.9375 12.6857 6.9375 12.375V7.875C6.9375 7.56434 7.18934 7.3125 7.5 7.3125Z" fill="white"/>
+          <path d="M10.5 7.3125C10.8107 7.3125 11.0625 7.56434 11.0625 7.875V12.375C11.0625 12.6857 10.8107 12.9375 10.5 12.9375C10.1893 12.9375 9.9375 12.6857 9.9375 12.375V7.875C9.9375 7.56434 10.1893 7.3125 10.5 7.3125Z" fill="white"/>
+          <path fillRule="evenodd" clipRule="evenodd" d="M10.8003 1.5C11.7735 1.50016 12.5623 2.28904 12.5625 3.26221V3.9375H15.375C15.6857 3.9375 15.9375 4.18934 15.9375 4.5C15.9375 4.81066 15.6857 5.0625 15.375 5.0625H14.4375V14.2874C14.4375 15.5093 13.4468 16.5 12.2249 16.5H5.77515C4.55322 16.5 3.5625 15.5093 3.5625 14.2874V5.0625H2.625C2.31434 5.0625 2.0625 4.81066 2.0625 4.5C2.0625 4.18934 2.31434 3.9375 2.625 3.9375H5.4375V3.26221C5.43766 2.28904 6.22654 1.50016 7.19971 1.5H10.8003ZM4.6875 14.2874C4.6875 14.888 5.17454 15.375 5.77515 15.375H12.2249C12.8255 15.375 13.3125 14.888 13.3125 14.2874V5.0625H4.6875V14.2874ZM7.19971 2.625C6.84786 2.62516 6.56266 2.91036 6.5625 3.26221V3.9375H11.4375V3.26221C11.4373 2.91036 11.1521 2.62516 10.8003 2.625H7.19971Z" fill="white"/>
+        </svg>
       </button>
     )}
   </div>
 )
 
-// ─── Thumbnail ────────────────────────────────────────────────────────────────
+// ─── FileThumbnail (Figma 컴포넌트명) ────────────────────────────────────────
 
-const Thumbnail: React.FC<ThumbnailProps> = ({
+const FileThumbnail: React.FC<ThumbnailProps> = ({
   src,
   filename = '파일명',
   extension = '',
@@ -142,10 +155,17 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
   onDelete,
   className = '',
 }) => {
-  const isSelected = state === 'selected' || selected
-  const isHovered  = state === 'hovered'
+  // 라이브 인터랙션: 마우스 hover → 액션바, 체크박스 클릭 → 선택(비제어)
+  const [hovered, setHovered] = useState(false)
+  const [internalSelected, setInternalSelected] = useState(false)
+
   const isFile     = state === 'file'
   const isWarning  = state === 'warning'
+  const isSelected = state === 'selected' || selected || internalSelected
+  // 액션바: hover 시 노출. 단 Selected/File/Warning에는 없음(Figma)
+  const isHovered  = (state === 'hovered' || hovered) && !isFile && !isWarning && !isSelected
+
+  const handleSelect = () => (onSelect ? onSelect() : setInternalSelected(s => !s))
 
   // 이미지 border 색상 — Default/Hovered: rgba(0,0,0,0.06) / Selected: #105aff
   const imageBorderClass = isSelected
@@ -155,8 +175,11 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
   return (
     // 외부: 190×161, r:12
     <div
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
       className={[
         'w-full rounded-xl overflow-hidden',
+        selectable ? 'cursor-pointer' : '',
         className,
       ].join(' ')}
     >
@@ -185,11 +208,6 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
         {/* 경고 아이콘 (State=Warning) */}
         {isWarning && <WarningIcon/>}
 
-        {/* 어두운 오버레이 */}
-        {!isFile && !isWarning && (
-          <div className="absolute inset-0 bg-black/[0.16] pointer-events-none"/>
-        )}
-
         {/* Action bar (Hovered) */}
         {isHovered && (
           <HoverActionBar onExport={onExport} onDownload={onDownload} onDelete={onDelete}/>
@@ -199,7 +217,7 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
         {selectable && (
           <button
             type="button"
-            onClick={onSelect}
+            onClick={(e) => { e.stopPropagation(); handleSelect() }}
             className="absolute top-[6px] right-[6px] focus:outline-none"
             aria-label={isSelected ? '선택 해제' : '선택'}
           >
@@ -230,4 +248,5 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
   )
 }
 
-export default Thumbnail
+export { FileThumbnail }
+export default FileThumbnail

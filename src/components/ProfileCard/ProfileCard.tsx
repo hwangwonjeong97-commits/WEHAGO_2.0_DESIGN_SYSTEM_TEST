@@ -50,7 +50,8 @@ const EmailIcon = () => (
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-export type ProfileCardVariant = 'default' | 'large'
+// Figma Type=Horizontal | Vertical (구 default/large 하위호환)
+export type ProfileCardVariant = 'horizontal' | 'vertical'
 
 export interface ProfileCardProps {
   name: string
@@ -61,7 +62,8 @@ export interface ProfileCardProps {
   phone?: string
   mobile?: string
   email?: string
-  variant?: ProfileCardVariant
+  variant?: ProfileCardVariant | 'default' | 'large'
+  online?: boolean   // 로그인(#6cd3ff) / 로그아웃(#d3d3d3)
   className?: string
   onMessage?: () => void
   onChat?: () => void
@@ -75,7 +77,7 @@ const AvatarImage: React.FC<{ src?: string; name: string; size: number; radius: 
 }) => {
   const [err, setErr] = useState(false)
   // 사람 이미지 플레이스홀더
-  const placeholder = `https://i.pravatar.cc/${size}?img=12`
+  const placeholder = `/Profile-image.png`
   const imgSrc = src && !err ? src : placeholder
 
   return (
@@ -113,25 +115,37 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
   phone,
   mobile,
   email,
-  variant = 'default',
+  variant = 'horizontal',
+  online = true,
   className = '',
   onMessage,
   onChat,
   onEmail,
 }) => {
   const displayName = title ? `${name} ${title}` : name
+  // 구 명칭 하위호환 매핑
+  const v = variant === 'large' ? 'vertical' : variant === 'default' ? 'horizontal' : variant
+  const dotColor = online ? '#6CD3FF' : '#D3D3D3'
 
-  if (variant === 'large') {
+  if (v === 'vertical') {
     return (
       <div
         className={[
-          'bg-white border border-secondary-100 rounded-[16px] w-[234px] overflow-hidden',
+          // Figma Type=Vertical: r16, border 없음(그림자로 구분)
+          'bg-white rounded-[16px] w-[234px] overflow-hidden',
+          'shadow-[0_4px_16px_rgba(0,0,0,0.08)]',
           className,
         ].join(' ')}
       >
-        {/* 대형 아바타 202×202, r:14 — Figma: 카드 234px, 이미지 202px → 좌우 16px 여백으로 중앙 */}
+        {/* 대형 아바타 202×202, r:16 + 온라인 점 16×16 */}
         <div className="flex justify-center pt-4 px-4">
-          <AvatarImage src={avatar} name={name} size={202} radius={14} />
+          <div className="relative">
+            <AvatarImage src={avatar} name={name} size={202} radius={16} />
+            <span
+              className="absolute w-4 h-4 rounded-full border-2 border-white"
+              style={{ backgroundColor: dotColor, right: 10, bottom: 10 }}
+            />
+          </div>
         </div>
 
         <div className="px-4 pt-3 pb-4">
@@ -195,8 +209,11 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
         {/* 아바타 32×32, r:12, 온라인 도트 */}
         <div className="relative flex-shrink-0">
           <AvatarImage src={avatar} name={name} size={32} radius={12} />
-          {/* 온라인 dot — #6CD3FF, r:3.25 */}
-          <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-[#6CD3FF] border-[1.5px] border-white" />
+          {/* 온라인 dot — 8×8, 로그인 #6CD3FF / 로그아웃 #D3D3D3 */}
+          <span
+            className="absolute bottom-0 right-0 w-2 h-2 rounded-full border-[1.5px] border-white"
+            style={{ backgroundColor: dotColor }}
+          />
         </div>
 
         {/* 액션 아이콘 버튼 (24×24, r:4) */}
