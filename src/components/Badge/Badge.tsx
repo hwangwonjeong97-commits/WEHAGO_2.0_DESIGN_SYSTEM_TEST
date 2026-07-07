@@ -20,7 +20,7 @@ interface BadgeAuthProps extends HTMLAttributes<HTMLSpanElement> {
 
 interface BadgeLabelProps extends HTMLAttributes<HTMLSpanElement> {
   variant?: 'label'
-  type?: 'default' | 'error' | 'info'
+  type?: 'default' | 'info' | 'positive' | 'negative'
   label?: string
   children?: React.ReactNode
 }
@@ -71,11 +71,20 @@ const authConfig = {
   guest:  { bg: 'bg-[#98a4b4]', label: '게스트', Icon: IcLink,       arrow: false },
 }
 
+// Figma Badge/State 정확 스펙 (bg / text 색)
 const labelStyles = {
-  default: { bg: 'bg-secondary-50',  text: 'text-secondary-600' },
-  error:   { bg: 'bg-negative-100',  text: 'text-negative-dangerPoint' },
-  info:    { bg: 'bg-primary-50',    text: 'text-primary-base' },
+  default:  { bg: 'bg-[#f4f4f4]', text: 'text-[#777777]' },
+  info:     { bg: 'bg-[#eff4ff]', text: 'text-[#105aff]' },
+  positive: { bg: 'bg-[#daf9e1]', text: 'text-[#007e47]' },
+  negative: { bg: 'bg-[#ffe8ea]', text: 'text-[#fa4553]' },
 }
+
+// ic_add 14×14 — Badge/State 선행 아이콘 (currentColor로 상태색 상속)
+const IcAdd14: React.FC = () => (
+  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+    <path d="M7 2.333v9.334M2.333 7h9.334" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+  </svg>
+)
 
 function formatCount(count: number, max?: number): string {
   if (max !== undefined && count > max) return `${max}+`
@@ -151,12 +160,13 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>((props, ref) => {
     <span
       ref={ref}
       className={[
-        'inline-flex items-center gap-0.5 h-5 px-1 rounded text-[11px] font-medium',
+        'inline-flex items-center gap-0.5 h-5 pl-1 pr-1.5 rounded text-[11px] font-medium',
         s.bg, s.text, className,
       ].join(' ')}
       {...(rest as HTMLAttributes<HTMLSpanElement>)}
     >
-      {label}
+      <IcAdd14 />
+      <span>{label}</span>
     </span>
   )
 })

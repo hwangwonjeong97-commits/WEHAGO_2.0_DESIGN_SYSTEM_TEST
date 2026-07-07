@@ -256,11 +256,12 @@ function BadgeDemo() {
           </div>
         </div>
         <div>
-          <p className="text-body5 font-medium text-neutral-500 mb-2">Badge — 상태 라벨</p>
+          <p className="text-body5 font-medium text-neutral-500 mb-2">Badge/State — 상태 라벨 (Default · Info · Positive · Negative)</p>
           <div className="flex gap-2 items-center">
             <Badge type="default">badge</Badge>
-            <Badge type="error">badge</Badge>
             <Badge type="info">badge</Badge>
+            <Badge type="positive">badge</Badge>
+            <Badge type="negative">badge</Badge>
           </div>
         </div>
       </div>
