@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import OverviewPage from './pages/Overview'
 import ColorPage from './pages/Color'
 import ScalePage from './pages/Scale'
 import TypographyPage from './pages/Typography'
@@ -24,7 +25,40 @@ const componentItems: { id: ComponentCategory; label: string }[] = [
 
 const COMPONENT_IDS = new Set<string>(componentItems.map((i) => i.id))
 
-type NavSection = FoundationName | ComponentCategory
+type NavSection = 'overview' | FoundationName | ComponentCategory
+
+// 컴포넌트 검색 인덱스: name(검색어) → 카테고리 + 스크롤 대상 제목(h4 텍스트)
+const COMPONENT_INDEX: { name: string; title: string; category: ComponentCategory }[] = [
+  { name: 'Button', title: 'Button', category: 'form' },
+  { name: 'Input', title: 'Input', category: 'form' },
+  { name: 'TextArea', title: 'TextArea', category: 'form' },
+  { name: 'SearchBar', title: 'SearchBar', category: 'form' },
+  { name: 'Dropdown', title: 'Dropdown', category: 'form' },
+  { name: 'SelectControl · Checkbox · Radio · Toggle', title: 'SelectControl', category: 'form' },
+  { name: 'DateTimeInput', title: 'DateTimeInput', category: 'form' },
+  { name: 'ActionBar', title: 'ActionBar', category: 'action' },
+  { name: 'FileUpload', title: 'FileUpload', category: 'action' },
+  { name: 'Tab', title: 'Tab', category: 'navi' },
+  { name: 'Header', title: 'Header', category: 'navi' },
+  { name: 'LNB / GNB', title: 'LNB / GNB', category: 'navi' },
+  { name: 'SNB', title: 'SNB', category: 'navi' },
+  { name: 'Tag', title: 'Tag', category: 'display' },
+  { name: 'Badge', title: 'Badge', category: 'display' },
+  { name: 'Avatar · AvatarGroup', title: 'Avatar', category: 'display' },
+  { name: 'FileThumbnail', title: 'FileThumbnail', category: 'display' },
+  { name: 'ProfileCard', title: 'ProfileCard', category: 'display' },
+  { name: 'Tooltip', title: 'Tooltip', category: 'display' },
+  { name: 'OverflowMenu', title: 'OverflowMenu', category: 'display' },
+  { name: 'List', title: 'List', category: 'display' },
+  { name: 'Card', title: 'Card', category: 'display' },
+  { name: 'DataListTable', title: 'DataListTable', category: 'display' },
+  { name: 'FormTable', title: 'FormTable', category: 'display' },
+  { name: 'InfoBox', title: 'InfoBox', category: 'display' },
+  { name: 'EmptySet', title: 'EmptySet', category: 'display' },
+  { name: 'Dialog / Alert', title: 'Dialog / Alert', category: 'feedback' },
+  { name: 'Snackbar', title: 'Snackbar', category: 'feedback' },
+  { name: 'Loading', title: 'Loading', category: 'feedback' },
+]
 
 const NAV_LINK: React.CSSProperties = {
   display: 'block',
@@ -53,16 +87,48 @@ const NAV_LABEL: React.CSSProperties = {
 const HEADER_H = 56
 
 export default function App() {
-  const [active, setActive] = useState<NavSection>('Color')
+  const [active, setActive] = useState<NavSection>('overview')
   const [drawerOpen, setDrawerOpen] = useState(false)
+  const [search, setSearch] = useState('')
+  const [pendingScroll, setPendingScroll] = useState<string | null>(null)
 
   const isComponent = COMPONENT_IDS.has(active)
-  const FoundationPage = !isComponent ? foundationPages[active as FoundationName] : null
+  const isOverview = active === 'overview'
+  const FoundationPage = !isComponent && !isOverview ? foundationPages[active as FoundationName] : null
 
   const handleNavClick = (id: NavSection) => {
     setActive(id)
     setDrawerOpen(false)
   }
+
+  // 검색 결과 선택 → 해당 카테고리로 이동 후 컴포넌트로 스크롤
+  const goToComponent = (item: { title: string; category: ComponentCategory }) => {
+    setActive(item.category)
+    setSearch('')
+    setPendingScroll(item.title)
+    setDrawerOpen(false)
+  }
+
+  useEffect(() => {
+    if (!pendingScroll) return
+    const doScroll = (smooth: boolean) => {
+      const el = Array.from(document.querySelectorAll('h4')).find(
+        (h) => h.textContent?.trim() === pendingScroll,
+      )
+      if (el) {
+        ;(el as HTMLElement).style.scrollMarginTop = `${HEADER_H + 16}px`
+        el.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'start' })
+      }
+    }
+    // 이미지 로딩에 의한 레이아웃 시프트 보정: 두 번 스크롤
+    const t1 = setTimeout(() => doScroll(false), 80)
+    const t2 = setTimeout(() => { doScroll(true); setPendingScroll(null) }, 500)
+    return () => { clearTimeout(t1); clearTimeout(t2) }
+  }, [active, pendingScroll])
+
+  const results = search.trim()
+    ? COMPONENT_INDEX.filter((c) => c.name.toLowerCase().includes(search.trim().toLowerCase()))
+    : []
 
   // 상단 우측 탭: 그룹 전환 시 해당 그룹의 첫 메뉴로 이동
   const handleTab = (tab: 'foundation' | 'components') => {
@@ -134,9 +200,13 @@ export default function App() {
             <path d="M1 2h16M1 7h16M1 12h16" />
           </svg>
         </button>
-        <span style={{ fontSize: 16, fontWeight: 600, color: '#1d1d1f', letterSpacing: '-0.3px', whiteSpace: 'nowrap' }}>
+        <button
+          onClick={() => handleNavClick('overview')}
+          aria-label="개요로 이동"
+          style={{ fontSize: 16, fontWeight: 600, color: '#1d1d1f', letterSpacing: '-0.3px', whiteSpace: 'nowrap', background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
+        >
           WEHAGO 2.0<span className="hidden sm:inline"> Design System</span>
-        </span>
+        </button>
 
         {/* 상단 우측 탭 */}
         <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 20, height: HEADER_H }}>
@@ -175,12 +245,42 @@ export default function App() {
       >
         {/* 활성 탭의 메뉴만 표시 */}
         <nav style={{ flex: 1, padding: '16px 10px' }}>
-          <p style={NAV_LABEL}>{isComponent ? 'Components' : 'Foundation'}</p>
-          <div>
-            {isComponent
-              ? componentItems.map((item) => navButton(item.id, item.label))
-              : foundationNames.map((name) => navButton(name, name))}
-          </div>
+          {isComponent ? (
+            <>
+              {/* 컴포넌트 검색 */}
+              <div style={{ padding: '0 6px 10px' }}>
+                <input
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="컴포넌트 검색"
+                  aria-label="컴포넌트 검색"
+                  style={{ width: '100%', boxSizing: 'border-box', height: 32, padding: '0 10px', fontSize: 13, border: '1px solid #e0e0e0', borderRadius: 8, outline: 'none', background: '#f7f7f7', color: '#1d1d1f' }}
+                />
+              </div>
+              {results.length > 0 ? (
+                <div>
+                  {results.map((r) => (
+                    <button key={r.title} onClick={() => goToComponent(r)} style={{ ...NAV_LINK, color: '#1d1d1f' }}>
+                      {r.name}
+                    </button>
+                  ))}
+                </div>
+              ) : search.trim() ? (
+                <p style={{ ...NAV_LINK, color: '#8e8e93', cursor: 'default' }}>검색 결과가 없습니다</p>
+              ) : (
+                <>
+                  <p style={NAV_LABEL}>Components</p>
+                  <div>{componentItems.map((item) => navButton(item.id, item.label))}</div>
+                </>
+              )}
+            </>
+          ) : (
+            <>
+              {navButton('overview', 'Overview')}
+              <p style={{ ...NAV_LABEL, marginTop: 16 }}>Foundation</p>
+              <div>{foundationNames.map((name) => navButton(name, name))}</div>
+            </>
+          )}
         </nav>
         <div style={{ padding: '14px 22px', borderTop: '1px solid #e0e0e0' }}>
           <p style={{ fontSize: 12, color: '#6e6e73', letterSpacing: '-0.1px' }}>token.json 기반 · v1.0.0</p>
@@ -189,7 +289,9 @@ export default function App() {
 
       {/* ── Main content ── */}
       <main style={{ marginTop: HEADER_H }} className="md:ml-[220px] min-h-screen overflow-x-hidden">
-        {FoundationPage ? (
+        {isOverview ? (
+          <OverviewPage />
+        ) : FoundationPage ? (
           <FoundationPage />
         ) : (
           <ComponentsSection category={active as ComponentCategory} />

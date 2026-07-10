@@ -51,7 +51,7 @@ export default function TypographyPage() {
     <DocsPage
       eyebrow="Foundation"
       title="Typography"
-      description="기본 글꼴로 국문·영문·숫자 모두 Noto Sans CJK KR 폰트를 사용합니다. Line-height 150%, Letter-spacing -0.5px."
+      description="국문·영문·숫자 모두 Noto Sans CJK KR을 기본 글꼴로 사용합니다. 기본 줄간격은 150%, 자간은 -0.5px입니다."
     >
       <DocsSection title="Typeface">
         <DocsCard title="Noto Sans CJK KR" description="국문·영문·숫자 공통 기본 글꼴입니다.">
