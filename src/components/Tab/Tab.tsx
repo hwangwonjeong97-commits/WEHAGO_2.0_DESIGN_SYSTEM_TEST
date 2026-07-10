@@ -104,7 +104,7 @@ const Tab: React.FC<TabProps> = ({ tabs, value, onChange, variant = 'border', si
                 tab.disabled ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer',
                 sel
                   ? 'bg-secondary-700 text-white font-bold'
-                  : 'bg-neutral-30 text-secondary-600 font-medium hover:bg-neutral-100',
+                  : 'bg-neutral-30 text-secondary-600 font-medium hover:bg-black/[0.03]',
               ].join(' ')}
             >
               {tab.icon && (

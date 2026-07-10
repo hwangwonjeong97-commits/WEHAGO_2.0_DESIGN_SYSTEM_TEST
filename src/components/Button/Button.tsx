@@ -52,7 +52,7 @@ const sizeClasses: Record<ButtonSize, string> = {
   lg: 'h-9 px-4 text-body3 rounded-md gap-1',
   md: 'h-8 px-3 text-body3 rounded-md gap-1',
   sm: 'h-7 px-2 text-body5 rounded-md gap-0.5',
-  xs: 'h-6 px-2 text-body5 rounded gap-0.5',
+  xs: 'h-6 px-2 text-body5 rounded gap-1',
 }
 
 const iconSizeClasses: Record<ButtonSize, string> = {

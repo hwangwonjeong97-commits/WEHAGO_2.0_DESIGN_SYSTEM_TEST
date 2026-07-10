@@ -23,7 +23,7 @@ export interface TagProps extends HTMLAttributes<HTMLSpanElement> {
 
 const sizeMap: Record<TagSize, { wrap: string; text: string; close: string }> = {
   md: { wrap: 'h-6 px-1.5 gap-0.5', text: 'text-body5 font-medium',  close: 'w-3 h-3' },
-  sm: { wrap: 'h-5 px-1.5 gap-0.5', text: 'text-body6 font-regular', close: 'w-2.5 h-2.5' },
+  sm: { wrap: 'h-5 px-1 gap-0.5', text: 'text-body6 font-regular', close: 'w-2.5 h-2.5' },
 }
 
 export const Tag = forwardRef<HTMLSpanElement, TagProps>(
