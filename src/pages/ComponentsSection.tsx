@@ -29,15 +29,13 @@ function PreviewCard({
   return (
     <div style={{ width: '100%', minWidth: 0 }}>
       <h4 style={{ fontSize: 21, fontWeight: 600, color: '#1d1d1f', letterSpacing: '-0.3px', margin: '0 0 16px' }}>{title}</h4>
-      <div style={{ borderRadius: 18, border: '1px solid #e0e0e0', width: '100%', boxSizing: 'border-box', overflow: 'hidden' }}>
-        {/* 프리뷰 wrapper: 이 안에서만 가로 스크롤 */}
-        <div style={{ overflowX: 'auto', minWidth: 0, borderRadius: 18, background: '#F9F9F9' }}>
-          <div className="ds-component-preview" style={{
-            padding: '24px', display: 'flex', flexWrap: 'nowrap', gap: 12,
-            alignItems: 'flex-start', minHeight: 80,
-          }}>
-            {children}
-          </div>
+      {/* overflow:visible — Dropdown 열림·Tooltip 등 카드 밖으로 뜨는 요소가 잘리지 않게. 넓은 데모는 wrap 처리 */}
+      <div style={{ borderRadius: 18, border: '1px solid #e0e0e0', width: '100%', boxSizing: 'border-box', background: '#F9F9F9' }}>
+        <div className="ds-component-preview" style={{
+          padding: '24px', display: 'flex', flexWrap: 'wrap', gap: 12,
+          alignItems: 'flex-start', minHeight: 80,
+        }}>
+          {children}
         </div>
       </div>
     </div>
