@@ -4,7 +4,7 @@ import Tag from './Tag'
 // Figma: Display / Tag (COMPONENT_SET) — Size=Medium·Small, State=Default·Hovered
 figma.connect(
   Tag,
-  'https://www.figma.com/design/k8USRkR1jv3eeOwcggvhED/Display?node-id=1-782',
+  'https://www.figma.com/design/vVNdCTvO5nvN88byoPuYkV/WEHAGO-Web-2.0_DSG?node-id=12284-10601',
   {
     props: {
       size: figma.enum('Size', {

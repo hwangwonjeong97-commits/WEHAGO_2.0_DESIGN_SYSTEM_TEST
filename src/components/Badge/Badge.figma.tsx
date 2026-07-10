@@ -5,7 +5,7 @@ import Badge from './Badge'
 // node-id는 실제 파일 기준. 필요 시 Figma에서 컴포넌트 우클릭 > Copy link 로 갱신.
 figma.connect(
   Badge,
-  'https://www.figma.com/design/k8USRkR1jv3eeOwcggvhED/Display?node-id=1-918',
+  'https://www.figma.com/design/vVNdCTvO5nvN88byoPuYkV/WEHAGO-Web-2.0_DSG?node-id=12306-15859',
   {
     props: {
       type: figma.enum('Type', {
@@ -22,7 +22,7 @@ figma.connect(
 // Badge/Role (권한) — Type=Master·Member·Guest
 figma.connect(
   Badge,
-  'https://www.figma.com/design/k8USRkR1jv3eeOwcggvhED/Display?node-id=1-940',
+  'https://www.figma.com/design/vVNdCTvO5nvN88byoPuYkV/WEHAGO-Web-2.0_DSG?node-id=11692-10422',
   {
     props: {
       type: figma.enum('Type', {
@@ -38,7 +38,7 @@ figma.connect(
 // Badge/Noti (알림) — Type=Default(카운트)·Dot
 figma.connect(
   Badge,
-  'https://www.figma.com/design/k8USRkR1jv3eeOwcggvhED/Display?node-id=1-963',
+  'https://www.figma.com/design/vVNdCTvO5nvN88byoPuYkV/WEHAGO-Web-2.0_DSG?node-id=11651-10073',
   {
     props: {
       dot: figma.enum('Type', {

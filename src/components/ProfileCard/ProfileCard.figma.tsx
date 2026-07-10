@@ -4,7 +4,7 @@ import ProfileCard from './ProfileCard'
 // Figma: Display / ProfileCard (COMPONENT_SET) — Type=Horizontal·Vertical
 figma.connect(
   ProfileCard,
-  'https://www.figma.com/design/k8USRkR1jv3eeOwcggvhED/Display?node-id=1-998',
+  'https://www.figma.com/design/vVNdCTvO5nvN88byoPuYkV/WEHAGO-Web-2.0_DSG?node-id=12268-12237',
   {
     props: {
       variant: figma.enum('Type', {
