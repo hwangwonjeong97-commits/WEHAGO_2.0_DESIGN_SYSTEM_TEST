@@ -95,7 +95,7 @@ export default function ScalePage() {
     <DocsPage
       eyebrow="Foundation"
       title="Scale"
-      description="radius · gap · padding · size · shadow 스케일입니다. token.json의 {number.*} 참조를 px로 해석합니다."
+      description="radius · gap · padding · size · shadow의 기준 스케일입니다. 일관된 리듬을 위해 정해진 단계 값만 사용하세요."
     >
       <DocsSection>
         <DocsCard largeTitle title="Radius" description="모서리 곡률. 우하단 원의 반지름이 곡률과 같습니다.">

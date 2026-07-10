@@ -134,7 +134,9 @@ export default function App() {
             <path d="M1 2h16M1 7h16M1 12h16" />
           </svg>
         </button>
-        <span style={{ fontSize: 16, fontWeight: 600, color: '#1d1d1f', letterSpacing: '-0.3px' }}>WEHAGO 2.0 Design System</span>
+        <span style={{ fontSize: 16, fontWeight: 600, color: '#1d1d1f', letterSpacing: '-0.3px', whiteSpace: 'nowrap' }}>
+          WEHAGO 2.0<span className="hidden sm:inline"> Design System</span>
+        </span>
 
         {/* 상단 우측 탭 */}
         <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 20, height: HEADER_H }}>

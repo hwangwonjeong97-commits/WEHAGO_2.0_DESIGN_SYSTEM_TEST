@@ -214,7 +214,7 @@ function BadgeDemo() {
     >
       <div className="w-full space-y-4">
         <div>
-          <p className="text-body5 font-medium text-neutral-500 mb-2">Badge/Noti — 알림 카운트 (항상 빨간색)</p>
+          <p className="text-body5 font-medium text-neutral-500 mb-2">Badge/Noti — 알림 카운트 (빨강 고정)</p>
           <div className="flex gap-3 items-center">
             <Badge variant="noti" count={3} />
             <Badge variant="noti" count={100} max={99} />
@@ -222,7 +222,7 @@ function BadgeDemo() {
           </div>
         </div>
         <div>
-          <p className="text-body5 font-medium text-neutral-500 mb-2">Badge/Role — 권한 뱃지 (Master · Member · Guest)</p>
+          <p className="text-body5 font-medium text-neutral-500 mb-2">Badge/Role — 권한 배지 (Master · Member · Guest)</p>
           <div className="flex gap-2 items-center">
             <Badge variant="role" type="master" />
             <Badge variant="role" type="member" />

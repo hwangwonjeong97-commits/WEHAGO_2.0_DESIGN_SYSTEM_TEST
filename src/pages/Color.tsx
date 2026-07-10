@@ -44,7 +44,7 @@ export default function ColorPage() {
     <DocsPage
       eyebrow="Foundation"
       title="Color"
-      description="token.json에서 읽어 alias를 실제 값까지 해석해 렌더링합니다. Primitive만 변경 가능하며, Semantic은 이를 참조합니다."
+      description="WEHAGO 2.0의 색상 팔레트입니다. Primitive(기본 색)를 Semantic(의미 색)이 참조하며, UI에는 Semantic 토큰 사용을 권장합니다."
     >
       <DocsSection title="Primitive">
         {primitive.map((g) => (
