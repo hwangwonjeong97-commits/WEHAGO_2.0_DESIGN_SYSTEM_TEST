@@ -16,7 +16,289 @@ import {
 
 // ─── PreviewCard ─────────────────────────────────────────────────────────────
 
-// title은 카드 밖(위)에 헤딩으로. 설명·Import 버튼은 제거. (description/importPath는 하위호환용 무시 prop)
+// 각 컴포넌트의 실제 props와 100% 일치하는 usage 코드. 제목으로 매칭.
+const CODE_SNIPPETS: Record<string, string> = {
+  Button: `import { Button } from './components'
+
+// variant: 'primary' | 'secondary' | 'tertiary'
+// size: 'lg' | 'md' | 'sm' | 'xs'
+<Button variant="primary" size="md">확인</Button>`,
+  Input: `import { Input } from './components'
+
+<Input
+  size="md"
+  placeholder="이름을 입력하세요"
+  clearable
+  onClear={() => {}}
+/>`,
+  TextArea: `import { TextArea } from './components'
+
+<TextArea
+  label="설명"
+  placeholder="내용을 입력하세요"
+  rows={3}
+  maxLength={200}
+/>`,
+  SearchBar: `import { SearchBar } from './components'
+
+<SearchBar
+  placeholder="검색어를 입력하세요"
+  onChange={(value) => {}}
+  onSearch={(value) => {}}
+/>`,
+  Dropdown: `import { Dropdown } from './components'
+
+<Dropdown
+  placeholder="선택하세요"
+  options={[
+    { value: 'opt1', label: '옵션 1' },
+    { value: 'opt2', label: '옵션 2' },
+  ]}
+  onChange={(value) => {}}
+/>`,
+  SelectControl: `import { Checkbox, Radio, Toggle } from './components'
+
+<Checkbox checked label="약관 동의" onChange={(checked) => {}} />
+<Radio name="plan" value="pro" label="Pro" onChange={(value) => {}} />
+<Toggle checked size="md" label="알림" onChange={(checked) => {}} />`,
+  DateTimeInput: `import { DateTimeInput } from './components'
+
+// type: 'date' | 'time' | 'datetime' | 'daterange'
+<DateTimeInput type="date" value="2026-04-23" onChange={(v) => {}} />`,
+  ActionBar: `import { ActionBar } from './components'
+
+<ActionBar
+  selectedCount={3}
+  actions={[
+    { label: '삭제', onClick: () => {} },
+    { label: '내보내기', onClick: () => {} },
+  ]}
+/>`,
+  FileUpload: `import { FileUpload } from './components'
+
+<FileUpload
+  multiple
+  accept="image/*"
+  maxSize={10}
+  onUpload={(files) => {}}
+/>`,
+  Tab: `import { Tab } from './components'
+
+// variant: 'border' | 'chips' | 'text' | 'icon' | 'segment' | 'line' | 'pill'
+<Tab
+  variant="border"
+  value="home"
+  tabs={[
+    { value: 'home', label: '홈' },
+    { value: 'files', label: '파일', count: 12 },
+  ]}
+  onChange={(value) => {}}
+/>`,
+  Header: `import { Header } from './components'
+
+<Header userName="김더존" userTitle="개발팀" />`,
+  'LNB / GNB': `import { LNB } from './components'
+
+<LNB
+  activeId="dashboard"
+  items={[
+    { id: 'dashboard', label: '대시보드' },
+    { id: 'members', label: '멤버', count: 8 },
+  ]}
+  onSelect={(id) => {}}
+/>`,
+  SNB: `import { SNB } from './components'
+
+<SNB
+  activeId="all"
+  groups={[
+    {
+      category: '문서',
+      items: [
+        { id: 'all', label: '전체 문서' },
+        { id: 'shared', label: '공유 문서' },
+      ],
+    },
+  ]}
+  onSelect={(id) => {}}
+/>`,
+  Tag: `import { Tag } from './components'
+
+<Tag size="md" onRemove={() => {}}>#태그</Tag>`,
+  Badge: `import { Badge } from './components'
+
+<Badge variant="noti" count={3} />           {/* 알림 카운트 */}
+<Badge variant="role" type="master" />        {/* 권한 배지 */}
+<Badge type="info">badge</Badge>              {/* 상태 라벨 */}`,
+  Avatar: `import { Avatar, AvatarGroup } from './components'
+
+// size: xsmall·small·medium·large·xlarge (또는 18·20·36·44·52·60)
+<Avatar name="김더존" size="medium" online />
+
+<AvatarGroup
+  type="group"
+  max={4}
+  avatars={[{ name: '김더존' }, { name: '이하나' }, { name: '박서준' }]}
+/>`,
+  FileThumbnail: `import { FileThumbnail } from './components'
+
+<FileThumbnail
+  filename="분기보고서"
+  extension="pdf"
+  fileSize="2.4MB"
+  selectable
+  onSelect={() => {}}
+/>`,
+  ProfileCard: `import { ProfileCard } from './components'
+
+// variant: 'horizontal' | 'vertical'
+<ProfileCard
+  variant="horizontal"
+  name="김더존"
+  title="책임"
+  department="개발팀"
+  online
+/>`,
+  Tooltip: `import { Tooltip } from './components'
+
+// placement: 'top' | 'bottom' | 'left' | 'right'
+<Tooltip content="도움말 내용" placement="top">
+  <button aria-label="도움말">?</button>
+</Tooltip>`,
+  OverflowMenu: `import { OverflowMenu } from './components'
+
+<OverflowMenu
+  align="right"
+  items={[
+    { label: '공유', onClick: () => {} },
+    { label: '삭제', variant: 'danger', onClick: () => {} },
+  ]}
+/>`,
+  List: `import { CheckboxList } from './components'
+
+<CheckboxList
+  items={[
+    { id: '1', label: '항목 1' },
+    { id: '2', label: '항목 2' },
+  ]}
+  selectedIds={['1']}
+  onSelectionChange={(ids) => {}}
+/>`,
+  Card: `import { Card } from './components'
+
+// type: 'single' | 'double'
+<Card
+  type="double"
+  title="김더존님의 미팅룸"
+  memberCount={4}
+  date="2026.04.23"
+  time="14:30"
+/>`,
+  DataListTable: `import { DataListTable } from './components'
+
+<DataListTable
+  columns={[
+    { key: 'name', header: '이름' },
+    { key: 'role', header: '권한' },
+  ]}
+  data={[{ id: '1', name: '김더존', role: '관리자' }]}
+  selectable
+  onSelectionChange={(ids) => {}}
+/>`,
+  FormTable: `import { FormTable, Input } from './components'
+
+<FormTable
+  rows={[
+    { cells: [{ label: '이름', required: true, content: <Input /> }] },
+    { cells: [{ label: '이메일', content: <Input /> }] },
+  ]}
+/>`,
+  InfoBox: `import { InfoBox } from './components'
+
+// type: 'info' | 'error'
+<InfoBox type="info" title="안내">안내 문구를 입력합니다.</InfoBox>`,
+  EmptySet: `import { EmptySet } from './components'
+
+// size: 'md' | 'sm' | 'xs'
+<EmptySet size="md" description="데이터가 없습니다" />`,
+  'Dialog / Alert': `import { Dialog, Button } from './components'
+
+// type: 'dialog' | 'alert'
+<Dialog
+  isOpen={open}
+  type="alert"
+  title="삭제하시겠어요?"
+  onClose={() => setOpen(false)}
+  footer={<Button variant="primary" size="md">확인</Button>}
+>
+  삭제한 항목은 복구할 수 없습니다.
+</Dialog>`,
+  Snackbar: `import { SnackbarProvider, useSnackbar } from './components'
+
+// 앱 최상단을 <SnackbarProvider>로 감싼 뒤 사용
+const { show } = useSnackbar()
+
+// show(message, type?, duration?, action?, onAction?)
+show('저장되었습니다', 'success')`,
+  Loading: `import { Loading } from './components'
+
+// variant: 'spinner' | 'dots' | 'skeleton', size: 'sm' | 'md' | 'lg'
+<Loading variant="spinner" size="md" />`,
+}
+
+function CodePanel({ code }: { code: string }) {
+  const [open, setOpen] = useState(false)
+  const [copied, setCopied] = useState(false)
+  const copy = () => {
+    navigator.clipboard?.writeText(code).then(() => {
+      setCopied(true)
+      setTimeout(() => setCopied(false), 1400)
+    })
+  }
+  return (
+    <div style={{ borderTop: '1px solid #e0e0e0', background: '#ffffff', borderRadius: '0 0 18px 18px' }}>
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        aria-expanded={open}
+        style={{
+          display: 'flex', alignItems: 'center', gap: 8, width: '100%',
+          padding: '11px 18px', background: 'none', border: 'none', cursor: 'pointer',
+          fontSize: 13, fontWeight: 500, color: '#4a4a4a', letterSpacing: '-0.3px',
+          borderRadius: '0 0 18px 18px',
+        }}
+      >
+        <span style={{ fontFamily: 'ui-monospace, monospace', color: '#719bfc' }}>&lt;/&gt;</span>
+        {open ? '코드 숨기기' : '코드 보기'}
+        <span style={{ marginLeft: 'auto', transition: 'transform .15s', transform: open ? 'rotate(180deg)' : 'none', fontSize: 11, color: '#989898' }}>▾</span>
+      </button>
+      {open && (
+        <div style={{ position: 'relative', padding: '0 12px 12px' }}>
+          <button
+            type="button"
+            onClick={copy}
+            style={{
+              position: 'absolute', top: 10, right: 22, zIndex: 1,
+              padding: '4px 10px', fontSize: 12, fontWeight: 500,
+              color: copied ? '#34c759' : '#cfcfcf', background: 'rgba(255,255,255,0.08)',
+              border: '1px solid rgba(255,255,255,0.18)', borderRadius: 7, cursor: 'pointer',
+              letterSpacing: '-0.3px',
+            }}
+          >
+            {copied ? '복사됨 ✓' : '복사'}
+          </button>
+          <pre style={{
+            margin: 0, background: '#222222', color: '#e6e6e6', borderRadius: 10,
+            padding: '16px 16px', fontSize: 13, lineHeight: 1.65, overflowX: 'auto',
+            fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
+          }}>{code}</pre>
+        </div>
+      )}
+    </div>
+  )
+}
+
+// title은 카드 밖(위)에 헤딩으로. 코드 스니펫이 있으면 접이식 "코드" 패널을 하단에 추가.
 function PreviewCard({
   title,
   children,
@@ -26,6 +308,7 @@ function PreviewCard({
   importPath?: string
   children: React.ReactNode
 }) {
+  const code = CODE_SNIPPETS[title]
   return (
     <div style={{ width: '100%', minWidth: 0 }}>
       <h4 style={{ fontSize: 21, fontWeight: 600, color: '#1d1d1f', letterSpacing: '-0.3px', margin: '0 0 16px' }}>{title}</h4>
@@ -34,9 +317,11 @@ function PreviewCard({
         <div className="ds-component-preview" style={{
           padding: '24px', display: 'flex', flexWrap: 'wrap', gap: 12,
           alignItems: 'flex-start', minHeight: 80,
+          borderRadius: code ? '18px 18px 0 0' : 18,
         }}>
           {children}
         </div>
+        {code && <CodePanel code={code} />}
       </div>
     </div>
   )
