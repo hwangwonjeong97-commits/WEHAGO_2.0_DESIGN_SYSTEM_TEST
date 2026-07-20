@@ -92,6 +92,7 @@ export default function App() {
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [search, setSearch] = useState('')
   const [pendingScroll, setPendingScroll] = useState<string | null>(null)
+  const [activeComponent, setActiveComponent] = useState<string | null>(null)
 
   const isGallery = active === 'gallery'
   const isFoundationGallery = active === 'foundation'
@@ -102,12 +103,14 @@ export default function App() {
 
   const handleNavClick = (id: NavSection) => {
     setActive(id)
+    setActiveComponent(null)
     setDrawerOpen(false)
   }
 
-  // 검색 결과 선택 → 해당 카테고리로 이동 후 컴포넌트로 스크롤
+  // 사이드바/검색/갤러리에서 컴포넌트 선택 → 해당 카테고리로 이동 후 컴포넌트로 스크롤
   const goToComponent = (item: { title: string; category: ComponentCategory }) => {
     setActive(item.category)
+    setActiveComponent(item.title)
     setSearch('')
     setPendingScroll(item.title)
     setDrawerOpen(false)
@@ -137,6 +140,7 @@ export default function App() {
   // 상단 우측 탭: 그룹 전환 시 해당 그룹의 첫 메뉴로 이동
   const handleTab = (tab: 'foundation' | 'components') => {
     setActive(tab === 'foundation' ? 'foundation' : 'gallery')
+    setActiveComponent(null)
     setDrawerOpen(false)
   }
 
@@ -274,8 +278,27 @@ export default function App() {
               ) : (
                 <>
                   {navButton('gallery', 'Overview')}
-                  <p style={{ ...NAV_LABEL, marginTop: 16 }}>Components</p>
-                  <div>{componentItems.map((item) => navButton(item.id, item.label))}</div>
+                  {componentItems.map((cat) => (
+                    <div key={cat.id} style={{ marginTop: 16 }}>
+                      <p style={NAV_LABEL}>{cat.label}</p>
+                      <div>
+                        {COMPONENT_INDEX.filter((c) => c.category === cat.id).map((c) => (
+                          <button
+                            key={c.title}
+                            onClick={() => goToComponent(c)}
+                            style={{
+                              ...NAV_LINK,
+                              color: activeComponent === c.title ? '#0066cc' : '#1d1d1f',
+                              background: activeComponent === c.title ? 'rgba(0,102,204,0.08)' : 'transparent',
+                              fontWeight: activeComponent === c.title ? 500 : 400,
+                            }}
+                          >
+                            {c.title}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
                 </>
               )}
             </>
