@@ -136,17 +136,47 @@ export const Loading: React.FC<LoadingProps> = (props) => {
 };
 
 // ─── Loader ───────────────────────────────────────────────────────────────────
-// Figma Loader: small spinner(~14px) + text "데이터를 불러오는 중입니다." 14px Regular #777777
-// 스피너와 텍스트가 세로로 쌓임, 전체 너비 중앙 정렬
+// Figma Loading: spinner + text "데이터를 불러오는 중입니다." (14px Regular #777777)
+//   Type: Indeterminate(회전 arc) / Determinate(회색 트랙 + 진행 arc)
+//   Layout: Vertical(세로 중앙) / Horizontal(가로)
+
+// Determinate: 회색 트랙(#ededed) + 파란 진행 arc(#105aff)
+const DeterminateSpinner: React.FC<{ value?: number; size?: number }> = ({ value = 25, size = 16 }) => {
+  const sw = 2
+  const r = (size - sw) / 2
+  const c = 2 * Math.PI * r
+  return (
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="shrink-0" role="status" aria-label="로딩 중">
+      <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="#ededed" strokeWidth={sw} />
+      <circle
+        cx={size / 2}
+        cy={size / 2}
+        r={r}
+        fill="none"
+        stroke="#105aff"
+        strokeWidth={sw}
+        strokeLinecap="round"
+        strokeDasharray={c}
+        strokeDashoffset={c * (1 - Math.min(Math.max(value, 0), 100) / 100)}
+        transform={`rotate(-90 ${size / 2} ${size / 2})`}
+      />
+    </svg>
+  )
+}
 
 interface LoaderProps {
   text?: string
   direction?: 'vertical' | 'horizontal'
+  type?: 'indeterminate' | 'determinate'
+  /** determinate 진행률 (0–100) */
+  value?: number
 }
 
 export const Loader: React.FC<LoaderProps> = ({
   text = '데이터를 불러오는 중입니다.',
   direction = 'vertical',
+  type = 'indeterminate',
+  value = 25,
 }) => (
   <div
     className={[
@@ -157,7 +187,7 @@ export const Loader: React.FC<LoaderProps> = ({
     role="status"
     aria-label={text}
   >
-    <Spinner size="sm" />
+    {type === 'determinate' ? <DeterminateSpinner value={value} /> : <Spinner size="sm" />}
     <p className="text-body3 font-regular text-secondary-600">{text}</p>
   </div>
 );

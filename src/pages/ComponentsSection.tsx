@@ -240,10 +240,13 @@ const { show } = useSnackbar()
 
 // show(message, type?, duration?, action?, onAction?)
 show('저장되었습니다', 'success')`,
-  Loading: `import { Loading } from './components'
+  Loading: `import { Loader } from './components'
 
-// variant: 'spinner' | 'dots' | 'skeleton', size: 'sm' | 'md' | 'lg'
-<Loading variant="spinner" size="md" />`,
+// type: 'indeterminate' | 'determinate', direction: 'horizontal' | 'vertical'
+<Loader type="indeterminate" direction="horizontal" />
+
+// determinate는 value(0–100)로 진행률 표시
+<Loader type="determinate" value={40} direction="vertical" />`,
 }
 
 function CodePanel({ code }: { code: string }) {
@@ -1248,17 +1251,23 @@ function LoadingDemo() {
   return (
     <PreviewCard
       title="Loading"
-      description="로딩 상태를 나타내는 스피너입니다. vertical · horizontal 2가지 레이아웃을 제공합니다."
+      description="로딩 상태를 나타냅니다. Type(Indeterminate 회전 · Determinate 진행률) × Layout(Horizontal · Vertical)을 제공합니다."
       importPath={`import { Loader } from './components'`}
     >
-      <div className="flex flex-wrap gap-10 items-center">
-        <div className="flex flex-col items-center gap-2">
-          <p className="text-body5 font-medium text-neutral-500 mb-1">Vertical</p>
-          <Loader direction="vertical" />
+      <div className="w-full flex flex-col gap-6">
+        <div>
+          <p className="text-body5 font-medium text-neutral-500 mb-2">Horizontal</p>
+          <div className="flex flex-wrap gap-10 items-center">
+            <Loader type="indeterminate" direction="horizontal" />
+            <Loader type="determinate" direction="horizontal" />
+          </div>
         </div>
-        <div className="flex flex-col gap-2">
-          <p className="text-body5 font-medium text-neutral-500 mb-1">Horizontal</p>
-          <Loader direction="horizontal" />
+        <div>
+          <p className="text-body5 font-medium text-neutral-500 mb-2">Vertical</p>
+          <div className="flex flex-wrap gap-10 items-start">
+            <Loader type="indeterminate" direction="vertical" />
+            <Loader type="determinate" direction="vertical" />
+          </div>
         </div>
       </div>
     </PreviewCard>

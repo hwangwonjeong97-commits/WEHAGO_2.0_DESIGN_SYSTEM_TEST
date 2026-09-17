@@ -49,7 +49,7 @@ const Tab: React.FC<TabProps> = ({ tabs, value, onChange, variant = 'border', si
   // ── TabBorder ──────────────────────────────────────────────────────────────
   if (v === 'border') {
     return (
-      <div className="flex items-end gap-5 border-b border-secondary-100 overflow-x-auto">
+      <div className="flex items-end gap-5 border-b border-[#e1e1e1] overflow-x-auto">
         {tabs.map(tab => {
           const sel = tab.value === value
           return (
