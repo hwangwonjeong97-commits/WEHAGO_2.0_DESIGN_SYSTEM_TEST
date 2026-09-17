@@ -29,6 +29,20 @@ function readScale(group: Record<string, any>, prefix: string, coreName?: string
 const HEADING = readScale(P.Heading ?? {}, 'Heading')
 const BODY = readScale(P.Body ?? {}, 'Body', 'Body3') // Body3(14px) = 기본 본문
 
+// Weight: typo.font-weight (400px/500px/700px) → 숫자
+const WEIGHTS = [
+  { label: 'Regular', value: parseInt(P.typo?.['font-weight']?.regular?.$value ?? '400', 10) },
+  { label: 'Medium', value: parseInt(P.typo?.['font-weight']?.medium?.$value ?? '500', 10) },
+  { label: 'Bold', value: parseInt(P.typo?.['font-weight']?.bold?.$value ?? '700', 10) },
+]
+
+// 공통 속성 (단일/균일 값)
+const PROPS = [
+  { label: 'Line-height', value: String(P.lineHeights?.['0']?.$value ?? '150%') },
+  { label: 'Letter-spacing', value: `${P.letterSpacing?.['0']?.$value ?? -0.5}px` },
+  { label: 'Paragraph-spacing', value: `${P.paragraphSpacing?.['0']?.$value ?? 0}px` },
+]
+
 function ScaleRow({ item }: { item: Scale }) {
   return (
     <div className="ds-type-row">
@@ -89,6 +103,43 @@ export default function TypographyPage() {
           <div className="ds-type-scale">
             {BODY.map((b) => (
               <ScaleRow key={b.name} item={b} />
+            ))}
+          </div>
+        </DocsCard>
+      </DocsSection>
+
+      <DocsSection title="Weight">
+        <DocsCard description="Noto Sans CJK KR은 Regular·Medium·Bold 3단계 굵기를 사용합니다.">
+          <div className="ds-type-scale">
+            {WEIGHTS.map((w) => (
+              <div key={w.label} className="ds-type-row">
+                <div
+                  className="ds-type-row__sample"
+                  style={{ fontFamily: NOTO, fontSize: 20, fontWeight: w.value, letterSpacing: '-0.5px', lineHeight: 1.5 }}
+                >
+                  {SAMPLE}
+                </div>
+                <div className="ds-type-row__meta">
+                  <span className="ds-type-row__name">{w.label}</span>
+                  <span className="ds-type-row__spec">{w.value}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </DocsCard>
+      </DocsSection>
+
+      <DocsSection title="Properties">
+        <DocsCard description="모든 텍스트 스타일에 공통 적용되는 값입니다.">
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
+            {PROPS.map((p) => (
+              <div
+                key={p.label}
+                style={{ flex: '1 1 180px', border: '1px solid #ececee', borderRadius: 12, padding: '14px 16px', background: '#fbfbfc' }}
+              >
+                <div style={{ fontSize: 12, color: '#8e8e93', letterSpacing: '-0.2px' }}>{p.label}</div>
+                <div style={{ fontSize: 20, fontWeight: 600, color: '#1d1d1f', marginTop: 4, fontVariantNumeric: 'tabular-nums' }}>{p.value}</div>
+              </div>
             ))}
           </div>
         </DocsCard>

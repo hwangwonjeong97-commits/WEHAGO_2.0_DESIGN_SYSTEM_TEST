@@ -1,4 +1,4 @@
-import { getFlat, semanticSet, type TokenEntry } from '../tokens'
+import { getFlat, primitiveSet, semanticSet, type TokenEntry } from '../tokens'
 import { DocsCard, DocsPage, DocsSection } from '../docs'
 import tokens from '../../token.json'
 import './Scale.css'
@@ -96,6 +96,7 @@ const SHADOWS = ['shadow-level1', 'shadow-level2', 'shadow-level3']
   .map((k, i) => ({ name: `shadow-level ${i + 1}`, css: shadowCss(PRIM[k].$value) }))
 
 export default function ScalePage() {
+  const number = getFlat(primitiveSet, 'number')
   const radius = getFlat(semanticSet, 'radius')
   // Figma Scale_2.0은 gap·padding을 1~8까지 문서화 (token.json엔 그 이상도 존재).
   const gap = getFlat(semanticSet, 'gap').slice(0, 8)
@@ -106,9 +107,23 @@ export default function ScalePage() {
     <DocsPage
       eyebrow="Foundation"
       title="Scale"
-      description="radius · gap · padding · size · shadow의 기준 스케일입니다. 일관된 리듬을 위해 정해진 단계 값만 사용하세요."
+      description="number · radius · gap · padding · size · shadow의 기준 스케일입니다. 일관된 리듬을 위해 정해진 단계 값만 사용하세요."
     >
       <DocsSection>
+        <DocsCard largeTitle title="Number" description="모든 간격·크기의 기준이 되는 primitive 스케일입니다. gap·padding·size·radius가 이 값을 참조합니다.">
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+            {number.map((e) => (
+              <div
+                key={e.path}
+                style={{ minWidth: 62, border: '1px solid #ececee', borderRadius: 10, padding: '10px 12px', background: '#fbfbfc', textAlign: 'center' }}
+              >
+                <div style={{ fontSize: 16, fontWeight: 600, color: '#1d1d1f', fontVariantNumeric: 'tabular-nums' }}>{px(e)}px</div>
+                <div style={{ fontSize: 11, color: '#8e8e93', marginTop: 2 }}>number/{e.name}</div>
+              </div>
+            ))}
+          </div>
+        </DocsCard>
+
         <DocsCard largeTitle title="Radius" description="모서리 곡률. 우하단 원의 반지름이 곡률과 같습니다.">
           <div className="ds-scale-grid">
             {radius.map((e) => (
