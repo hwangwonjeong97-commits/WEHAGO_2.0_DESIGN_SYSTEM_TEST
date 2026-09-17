@@ -173,7 +173,7 @@ const IndeterminateSpinner: React.FC = () => (
   </svg>
 )
 
-// Determinate: 트랙 없이 파란 arc만, 회전
+// Determinate: 회색 트랙(#ededed) + 파란 arc, 회전 (Figma LoadSpinner 18×18 동일)
 const DeterminateSpinner: React.FC = () => (
   <svg
     width={SPINNER}
@@ -183,6 +183,7 @@ const DeterminateSpinner: React.FC = () => (
     role="status"
     aria-label="로딩 중"
   >
+    <circle cx={SPINNER / 2} cy={SPINNER / 2} r={SPINNER_R} fill="none" stroke="#ededed" strokeWidth={SPINNER_SW} />
     <circle
       cx={SPINNER / 2}
       cy={SPINNER / 2}
