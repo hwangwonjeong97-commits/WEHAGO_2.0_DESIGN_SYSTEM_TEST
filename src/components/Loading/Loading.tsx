@@ -140,29 +140,54 @@ export const Loading: React.FC<LoadingProps> = (props) => {
 //   Type: Indeterminate(회전 arc) / Determinate(회색 트랙 + 진행 arc)
 //   Layout: Vertical(세로 중앙) / Horizontal(가로)
 
+// Figma LoadSpinner: 18×18, arc stroke 3px #105aff
+const SPINNER = 18
+const SPINNER_SW = 3
+const SPINNER_R = (SPINNER - SPINNER_SW) / 2
+const SPINNER_C = 2 * Math.PI * SPINNER_R
+
+// Indeterminate: 파란 arc(~270°)가 회전
+const IndeterminateSpinner: React.FC = () => (
+  <svg
+    width={SPINNER}
+    height={SPINNER}
+    viewBox={`0 0 ${SPINNER} ${SPINNER}`}
+    className="animate-spin shrink-0"
+    role="status"
+    aria-label="로딩 중"
+  >
+    <circle
+      cx={SPINNER / 2}
+      cy={SPINNER / 2}
+      r={SPINNER_R}
+      fill="none"
+      stroke="#105aff"
+      strokeWidth={SPINNER_SW}
+      strokeLinecap="round"
+      strokeDasharray={SPINNER_C}
+      strokeDashoffset={SPINNER_C * 0.25}
+    />
+  </svg>
+)
+
 // Determinate: 회색 트랙(#ededed) + 파란 진행 arc(#105aff)
-const DeterminateSpinner: React.FC<{ value?: number; size?: number }> = ({ value = 25, size = 16 }) => {
-  const sw = 2
-  const r = (size - sw) / 2
-  const c = 2 * Math.PI * r
-  return (
-    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="shrink-0" role="status" aria-label="로딩 중">
-      <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="#ededed" strokeWidth={sw} />
-      <circle
-        cx={size / 2}
-        cy={size / 2}
-        r={r}
-        fill="none"
-        stroke="#105aff"
-        strokeWidth={sw}
-        strokeLinecap="round"
-        strokeDasharray={c}
-        strokeDashoffset={c * (1 - Math.min(Math.max(value, 0), 100) / 100)}
-        transform={`rotate(-90 ${size / 2} ${size / 2})`}
-      />
-    </svg>
-  )
-}
+const DeterminateSpinner: React.FC<{ value?: number }> = ({ value = 25 }) => (
+  <svg width={SPINNER} height={SPINNER} viewBox={`0 0 ${SPINNER} ${SPINNER}`} className="shrink-0" role="status" aria-label="로딩 중">
+    <circle cx={SPINNER / 2} cy={SPINNER / 2} r={SPINNER_R} fill="none" stroke="#ededed" strokeWidth={SPINNER_SW} />
+    <circle
+      cx={SPINNER / 2}
+      cy={SPINNER / 2}
+      r={SPINNER_R}
+      fill="none"
+      stroke="#105aff"
+      strokeWidth={SPINNER_SW}
+      strokeLinecap="round"
+      strokeDasharray={SPINNER_C}
+      strokeDashoffset={SPINNER_C * (1 - Math.min(Math.max(value, 0), 100) / 100)}
+      transform={`rotate(-90 ${SPINNER / 2} ${SPINNER / 2})`}
+    />
+  </svg>
+)
 
 interface LoaderProps {
   text?: string
@@ -187,7 +212,7 @@ export const Loader: React.FC<LoaderProps> = ({
     role="status"
     aria-label={text}
   >
-    {type === 'determinate' ? <DeterminateSpinner value={value} /> : <Spinner size="sm" />}
+    {type === 'determinate' ? <DeterminateSpinner value={value} /> : <IndeterminateSpinner />}
     <p className="text-body3 font-regular text-secondary-600">{text}</p>
   </div>
 );
