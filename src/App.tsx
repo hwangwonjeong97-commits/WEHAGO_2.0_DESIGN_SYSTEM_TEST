@@ -3,6 +3,7 @@ import OverviewPage from './pages/Overview'
 import ColorPage from './pages/Color'
 import ScalePage from './pages/Scale'
 import TypographyPage from './pages/Typography'
+import IconographyPage from './pages/Iconography'
 import ComponentsSection, { type ComponentCategory } from './pages/ComponentsSection'
 import ComponentGallery, { FoundationGallery, type FoundationKey } from './pages/ComponentGallery'
 import './App.css'
@@ -11,6 +12,7 @@ const foundationPages = {
   Color: ColorPage,
   Scale: ScalePage,
   Typography: TypographyPage,
+  Iconography: IconographyPage,
 } as const
 
 type FoundationName = keyof typeof foundationPages

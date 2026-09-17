@@ -3,7 +3,7 @@ import { DocsPage } from '../docs'
 import type { ComponentCategory } from './ComponentsSection'
 
 export type GalleryTarget = { title: string; category: ComponentCategory }
-export type FoundationKey = 'Color' | 'Scale' | 'Typography'
+export type FoundationKey = 'Color' | 'Scale' | 'Typography' | 'Iconography'
 
 // ── 공용 프레젠테이션 ───────────────────────────────────────────────
 type ViewItem = { label: string; desc: string; img: string; onClick: () => void }
@@ -181,6 +181,7 @@ const FOUNDATION: { name: FoundationKey; label: string; desc: string; img: strin
   { name: 'Color', label: 'Color', desc: '색상 팔레트 · Primitive/Semantic 토큰', img: '/foundation/color.png' },
   { name: 'Scale', label: 'Scale', desc: 'radius · gap · padding · size · shadow 스케일', img: '/foundation/scale.png' },
   { name: 'Typography', label: 'Typography', desc: '글꼴 · 타이포그래피 스케일', img: '/foundation/typography.png' },
+  { name: 'Iconography', label: 'Iconography', desc: '아이콘 세트 · 코드·SVG 다운로드', img: '/foundation/iconography.png' },
 ]
 
 // ── 페이지 ──────────────────────────────────────────────────────────

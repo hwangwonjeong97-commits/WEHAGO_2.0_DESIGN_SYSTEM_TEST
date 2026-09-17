@@ -6,7 +6,13 @@ const BOX = 56 // radius/padding 데모 박스 크기
 
 function px(entry: TokenEntry): number | null {
   const v = entry.resolved.value
-  return typeof v === 'number' ? v : null
+  if (typeof v === 'number') return v
+  // 새 토큰은 number 원시값을 "4px" 같은 dimension 문자열로 관리 → 숫자 추출
+  if (typeof v === 'string') {
+    const n = parseFloat(v)
+    return Number.isNaN(n) ? null : n
+  }
+  return null
 }
 
 // Figma 'Scale_2.0'(node 12726:23725) 라벨 형식: radius/xxsmall(4px)
