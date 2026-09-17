@@ -1,6 +1,6 @@
 import React, { forwardRef, InputHTMLAttributes, useId } from 'react'
 
-type InputSize = 'md' | 'sm'
+type InputSize = 'lg' | 'md' | 'sm'
 type InputStatus = 'default' | 'success' | 'warning' | 'error'
 
 export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
@@ -65,8 +65,9 @@ const helperClass: Record<InputStatus, string> = {
 }
 
 const sizeMap = {
-  md: { height: 'h-8',  text: 'text-body3', iconSm: false },
-  sm: { height: 'h-7',  text: 'text-body5', iconSm: true  },
+  lg: { height: 'h-11', pad: 'px-3', radius: 'rounded-[8px]', text: 'text-body3', iconSm: false },
+  md: { height: 'h-8',  pad: 'px-2', radius: 'rounded-[6px]', text: 'text-body3', iconSm: false },
+  sm: { height: 'h-7',  pad: 'px-2', radius: 'rounded-[6px]', text: 'text-body5', iconSm: true  },
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -92,7 +93,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     const generatedId = useId()
     const inputId = externalId ?? generatedId
     const helperId = helperText ? `${inputId}-helper` : undefined
-    const { height, text, iconSm } = sizeMap[size]
+    const { height, pad, radius, text, iconSm } = sizeMap[size]
 
     const wrapperBorder = disabled
       ? 'border-secondary-200 bg-secondary-40'
@@ -110,8 +111,10 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         {/* Input wrapper */}
         <div
           className={[
-            'flex items-center px-2 rounded-[6px] border transition-colors duration-150',
+            'flex items-center border transition-colors duration-150',
             height,
+            pad,
+            radius,
             wrapperBorder,
             !disabled ? 'bg-white' : '',
           ].filter(Boolean).join(' ')}

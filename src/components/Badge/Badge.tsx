@@ -20,7 +20,7 @@ interface BadgeAuthProps extends HTMLAttributes<HTMLSpanElement> {
 
 interface BadgeLabelProps extends HTMLAttributes<HTMLSpanElement> {
   variant?: 'label'
-  type?: 'default' | 'info' | 'positive' | 'negative'
+  type?: 'default' | 'info' | 'positive' | 'negative' | 'warning'
   label?: string
   children?: React.ReactNode
 }
@@ -81,6 +81,7 @@ const labelStyles = {
   info:     { bg: 'bg-[#eff4ff]', text: 'text-[#105aff]', icon: '#719bfc' },
   positive: { bg: 'bg-[#daf9e1]', text: 'text-[#007e47]', icon: '#27c36f' },
   negative: { bg: 'bg-[#ffe8ea]', text: 'text-[#fa4553]', icon: '#fa4553' },
+  warning:  { bg: 'bg-[#fff2dc]', text: 'text-[#eb6400]', icon: '#ffa000' },
 }
 
 // ic_add 14×14 — Figma 원본 (상태별 아이콘 색)

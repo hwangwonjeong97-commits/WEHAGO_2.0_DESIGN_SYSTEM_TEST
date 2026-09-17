@@ -21,7 +21,7 @@ const CODE_SNIPPETS: Record<string, string> = {
   Button: `import { Button } from './components'
 
 // variant: 'primary' | 'secondary' | 'tertiary'
-// size: 'lg' | 'md' | 'sm' | 'xs'
+// size: 'xl' | 'lg' | 'md' | 'sm' | 'xs'
 <Button variant="primary" size="md">확인</Button>`,
   Input: `import { Input } from './components'
 
@@ -445,6 +445,7 @@ function ButtonDemo() {
         <div className="pt-4 border-t border-secondary-60">
           <p className="text-body5 font-medium text-neutral-500 mb-3">Size</p>
           <div className="flex flex-wrap gap-2 items-center">
+            <Button size="xl">XLarge</Button>
             <Button size="lg">Large</Button>
             <Button size="md">Medium</Button>
             <Button size="sm">Small</Button>
@@ -515,12 +516,13 @@ function BadgeDemo() {
           </div>
         </div>
         <div>
-          <p className="text-body5 font-medium text-neutral-500 mb-2">Badge/State — 상태 라벨 (Default · Info · Positive · Negative)</p>
+          <p className="text-body5 font-medium text-neutral-500 mb-2">Badge/State — 상태 라벨 (Default · Info · Positive · Negative · Warning)</p>
           <div className="flex gap-2 items-center">
             <Badge type="default">badge</Badge>
             <Badge type="info">badge</Badge>
             <Badge type="positive">badge</Badge>
             <Badge type="negative">badge</Badge>
+            <Badge type="warning">badge</Badge>
           </div>
         </div>
       </div>
@@ -609,6 +611,7 @@ function InputDemo() {
         <div>
           <p className="text-body5 font-medium text-neutral-500 mb-2">Size</p>
           <div className="flex flex-wrap gap-3 items-center">
+            <Input size="lg" placeholder="Large (44px)" className="w-48" />
             <Input size="md" placeholder="Medium (32px)" className="w-48"
               value={val} onChange={e => setVal(e.target.value)}
               clearable onClear={() => setVal('')} />

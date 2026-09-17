@@ -9,7 +9,7 @@ import React, { forwardRef, ButtonHTMLAttributes } from 'react'
 //   letterSpacing: -0.5px (global via theme.css)
 
 type ButtonVariant = 'primary' | 'secondary' | 'tertiary'
-type ButtonSize = 'lg' | 'md' | 'sm' | 'xs'
+type ButtonSize = 'xl' | 'lg' | 'md' | 'sm' | 'xs'
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant
@@ -49,6 +49,7 @@ const variantClasses: Record<ButtonVariant, string> = {
 }
 
 const sizeClasses: Record<ButtonSize, string> = {
+  xl: 'h-11 px-4 text-body3 rounded-lg gap-1',
   lg: 'h-9 px-4 text-body3 rounded-md gap-1',
   md: 'h-8 px-3 text-body3 rounded-md gap-1',
   sm: 'h-7 px-2 text-body5 rounded-md gap-0.5',
@@ -56,6 +57,7 @@ const sizeClasses: Record<ButtonSize, string> = {
 }
 
 const iconSizeClasses: Record<ButtonSize, string> = {
+  xl: 'w-[18px] h-[18px]',
   lg: 'w-[18px] h-[18px]',
   md: 'w-[18px] h-[18px]',
   sm: 'w-[14px] h-[14px]',
@@ -155,6 +157,7 @@ ButtonIcon.displayName = 'ButtonIcon'
 // ─── GhostButton ──────────────────────────────────────────────────────────────
 
 const ghostSizeClasses: Record<ButtonSize, string> = {
+  xl: 'h-11 px-3 text-body3 rounded-lg',
   lg: 'h-9 px-3 text-body3 rounded-md',
   md: 'h-8 px-3 text-body3 rounded-md',
   sm: 'h-7 px-2.5 text-body5 rounded-md',
@@ -162,6 +165,7 @@ const ghostSizeClasses: Record<ButtonSize, string> = {
 }
 
 const ghostIconSizeClasses: Record<ButtonSize, string> = {
+  xl: 'w-[14px] h-[14px]',
   lg: 'w-[14px] h-[14px]',
   md: 'w-[14px] h-[14px]',
   sm: 'w-[14px] h-[14px]',
