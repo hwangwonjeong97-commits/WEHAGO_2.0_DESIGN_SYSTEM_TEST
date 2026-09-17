@@ -1,27 +1,33 @@
-import { getGroups, primitiveSet, type TokenEntry } from '../tokens'
+import tokens from '../../token.json'
 import { DocsCard, DocsPage, DocsSection } from '../docs'
 import './Typography.css'
 
-// Figma 'Typography_2.0' (node 12726:23597)에서 확인한 실제 스펙.
+// token.json(primitive/Value)에서 타입 스케일을 직접 읽어 반영한다.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const P = (tokens as any)['primitive/Value']
+
 const NOTO = "'Noto Sans KR', 'Noto Sans CJK KR', sans-serif"
 const SAMPLE = '비즈니스 플랫폼 AaBbCc 9,0124,000 @#!?'
 
-type Scale = { name: string; size: number; usage: string; core?: boolean }
+// fontSize.N → px
+const FS: Record<string, number> = {}
+for (const k of Object.keys(P.fontSize ?? {})) FS[k] = P.fontSize[k].$value
 
-const HEADING: Scale[] = [
-  { name: 'Heading/Heading1', size: 20, usage: '페이지 단위 타이틀 쓰임새로 사용 권장' },
-  { name: 'Heading/Heading2', size: 18, usage: '페이지 단위 타이틀 쓰임새로 사용 권장' },
-]
+type Scale = { name: string; size: number; core?: boolean }
 
-const BODY: Scale[] = [
-  { name: 'Body/Body1', size: 16, usage: '주요 본문 쓰임새로 사용 권장' },
-  { name: 'Body/Body2', size: 15, usage: '주요 본문 쓰임새로 사용 권장' },
-  { name: 'Body/Body3', size: 14, usage: '주요 본문 쓰임새로 사용 권장', core: true },
-  { name: 'Body/Body4', size: 13, usage: '주요 본문 쓰임새로 사용 권장' },
-  { name: 'Body/Body5', size: 12, usage: '본문 보조 쓰임새로 사용 권장' },
-  { name: 'Body/Body6', size: 11, usage: '본문 보조·하위 위계 텍스트 쓰임새로 사용 권장' },
-  { name: 'Body/Body7', size: 10, usage: '본문 보조·하위 위계 텍스트 쓰임새로 사용 권장' },
-]
+// 합성 타이포 토큰(Heading/Body)의 fontSize 참조를 실제 px로 해석
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function readScale(group: Record<string, any>, prefix: string, coreName?: string): Scale[] {
+  return Object.keys(group).map((name) => {
+    const ref: string = group[name]?.Regular?.$value?.fontSize ?? ''
+    const m = ref.match(/\{fontSize\.(\w+)\}/)
+    const size = m ? FS[m[1]] : 0
+    return { name: `${prefix}/${name}`, size, core: name === coreName }
+  })
+}
+
+const HEADING = readScale(P.Heading ?? {}, 'Heading')
+const BODY = readScale(P.Body ?? {}, 'Body', 'Body3') // Body3(14px) = 기본 본문
 
 function ScaleRow({ item }: { item: Scale }) {
   return (
@@ -37,10 +43,7 @@ function ScaleRow({ item }: { item: Scale }) {
           {item.name}
           {item.core && <em className="ds-type-row__badge">Core size</em>}
         </span>
-        <span className="ds-type-row__spec">
-          {item.size}px · Regular / Medium / Bold
-        </span>
-        <span className="ds-type-row__usage">{item.usage}</span>
+        <span className="ds-type-row__spec">{item.size}px · Regular / Medium / Bold</span>
       </div>
     </div>
   )

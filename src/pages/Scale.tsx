@@ -1,6 +1,10 @@
 import { getFlat, semanticSet, type TokenEntry } from '../tokens'
 import { DocsCard, DocsPage, DocsSection } from '../docs'
+import tokens from '../../token.json'
 import './Scale.css'
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const PRIM = (tokens as any)['primitive/Value']
 
 const BOX = 56 // radius/padding 데모 박스 크기
 
@@ -82,13 +86,14 @@ function SizeRow({ entry }: { entry: TokenEntry }) {
   )
 }
 
-// Figma는 shadow-level 1·2·3만 정의(실제 blur/offset 값은 Figma effect로 관리, 토큰 미포함).
-const SHADOWS = [
-  // Figma 정확값 (X Y Blur Spread #000 10%)
-  { name: 'shadow-level 1', css: '0 2px 4px 0 rgba(0,0,0,0.1)' },   // X0 Y2 Blur4
-  { name: 'shadow-level 2', css: '0 4px 12px 0 rgba(0,0,0,0.1)' },  // X0 Y4 Blur12
-  { name: 'shadow-level 3', css: '4px 8px 20px 0 rgba(0,0,0,0.1)' },// X4 Y8 Blur20
-]
+// shadow-level1/2/3 primitive 토큰에서 직접 CSS box-shadow 생성
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function shadowCss(v: any): string {
+  return `${v.x}px ${v.y}px ${v.blur}px ${v.spread}px ${v.color}`
+}
+const SHADOWS = ['shadow-level1', 'shadow-level2', 'shadow-level3']
+  .filter((k) => PRIM?.[k]?.$value)
+  .map((k, i) => ({ name: `shadow-level ${i + 1}`, css: shadowCss(PRIM[k].$value) }))
 
 export default function ScalePage() {
   const radius = getFlat(semanticSet, 'radius')
@@ -136,7 +141,7 @@ export default function ScalePage() {
           </div>
         </DocsCard>
 
-        <DocsCard largeTitle title="Shadow" description="그림자 레벨. 실제 blur/offset 값은 Figma effect로 관리됩니다.">
+        <DocsCard largeTitle title="Shadow" description="그림자 레벨. token.json의 shadow-level 토큰 값을 그대로 반영합니다.">
           <div className="ds-shadow-grid">
             {SHADOWS.map((s) => (
               <div key={s.name} className="ds-shadow-item">
