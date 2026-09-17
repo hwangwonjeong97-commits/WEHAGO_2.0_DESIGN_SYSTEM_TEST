@@ -244,9 +244,7 @@ show('저장되었습니다', 'success')`,
 
 // type: 'indeterminate' | 'determinate', direction: 'horizontal' | 'vertical'
 <Loader type="indeterminate" direction="horizontal" />
-
-// determinate는 value(0–100)로 진행률 표시
-<Loader type="determinate" value={40} direction="vertical" />`,
+<Loader type="determinate" direction="vertical" />`,
 }
 
 function CodePanel({ code }: { code: string }) {

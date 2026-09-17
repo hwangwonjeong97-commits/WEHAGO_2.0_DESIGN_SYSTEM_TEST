@@ -146,8 +146,35 @@ const SPINNER_SW = 3
 const SPINNER_R = (SPINNER - SPINNER_SW) / 2
 const SPINNER_C = 2 * Math.PI * SPINNER_R
 
-// Indeterminate: 파란 arc(~270°)가 회전
+const ARC = 0.25 // 표시 arc 비율(offset) → 75% 원호
+
+// Indeterminate: 회색 트랙(#ededed) + 파란 arc, 회전
 const IndeterminateSpinner: React.FC = () => (
+  <svg
+    width={SPINNER}
+    height={SPINNER}
+    viewBox={`0 0 ${SPINNER} ${SPINNER}`}
+    className="animate-spin shrink-0"
+    role="status"
+    aria-label="로딩 중"
+  >
+    <circle cx={SPINNER / 2} cy={SPINNER / 2} r={SPINNER_R} fill="none" stroke="#ededed" strokeWidth={SPINNER_SW} />
+    <circle
+      cx={SPINNER / 2}
+      cy={SPINNER / 2}
+      r={SPINNER_R}
+      fill="none"
+      stroke="#105aff"
+      strokeWidth={SPINNER_SW}
+      strokeLinecap="round"
+      strokeDasharray={SPINNER_C}
+      strokeDashoffset={SPINNER_C * ARC}
+    />
+  </svg>
+)
+
+// Determinate: 트랙 없이 파란 arc만, 회전
+const DeterminateSpinner: React.FC = () => (
   <svg
     width={SPINNER}
     height={SPINNER}
@@ -165,26 +192,7 @@ const IndeterminateSpinner: React.FC = () => (
       strokeWidth={SPINNER_SW}
       strokeLinecap="round"
       strokeDasharray={SPINNER_C}
-      strokeDashoffset={SPINNER_C * 0.25}
-    />
-  </svg>
-)
-
-// Determinate: 회색 트랙(#ededed) + 파란 진행 arc(#105aff)
-const DeterminateSpinner: React.FC<{ value?: number }> = ({ value = 25 }) => (
-  <svg width={SPINNER} height={SPINNER} viewBox={`0 0 ${SPINNER} ${SPINNER}`} className="shrink-0" role="status" aria-label="로딩 중">
-    <circle cx={SPINNER / 2} cy={SPINNER / 2} r={SPINNER_R} fill="none" stroke="#ededed" strokeWidth={SPINNER_SW} />
-    <circle
-      cx={SPINNER / 2}
-      cy={SPINNER / 2}
-      r={SPINNER_R}
-      fill="none"
-      stroke="#105aff"
-      strokeWidth={SPINNER_SW}
-      strokeLinecap="round"
-      strokeDasharray={SPINNER_C}
-      strokeDashoffset={SPINNER_C * (1 - Math.min(Math.max(value, 0), 100) / 100)}
-      transform={`rotate(-90 ${SPINNER / 2} ${SPINNER / 2})`}
+      strokeDashoffset={SPINNER_C * ARC}
     />
   </svg>
 )
@@ -193,15 +201,12 @@ interface LoaderProps {
   text?: string
   direction?: 'vertical' | 'horizontal'
   type?: 'indeterminate' | 'determinate'
-  /** determinate 진행률 (0–100) */
-  value?: number
 }
 
 export const Loader: React.FC<LoaderProps> = ({
   text = '데이터를 불러오는 중입니다.',
   direction = 'vertical',
   type = 'indeterminate',
-  value = 25,
 }) => (
   <div
     className={[
@@ -212,7 +217,7 @@ export const Loader: React.FC<LoaderProps> = ({
     role="status"
     aria-label={text}
   >
-    {type === 'determinate' ? <DeterminateSpinner value={value} /> : <IndeterminateSpinner />}
+    {type === 'determinate' ? <DeterminateSpinner /> : <IndeterminateSpinner />}
     <p className="text-body3 font-regular text-secondary-600">{text}</p>
   </div>
 );
