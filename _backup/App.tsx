@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react'
+import OverviewPage from './pages/Overview'
 import ColorPage from './pages/Color'
 import ScalePage from './pages/Scale'
 import TypographyPage from './pages/Typography'
 import IconographyPage from './pages/Iconography'
 import ComponentsSection, { type ComponentCategory } from './pages/ComponentsSection'
+import ComponentGallery, { FoundationGallery, type FoundationKey } from './pages/ComponentGallery'
 import './App.css'
 
 const foundationPages = {
@@ -26,7 +28,7 @@ const componentItems: { id: ComponentCategory; label: string }[] = [
 
 const COMPONENT_IDS = new Set<string>(componentItems.map((i) => i.id))
 
-type NavSection = FoundationName | ComponentCategory
+type NavSection = 'overview' | 'gallery' | 'foundation' | FoundationName | ComponentCategory
 
 // 컴포넌트 검색 인덱스: name(검색어) → 카테고리 + 스크롤 대상 제목(h4 텍스트)
 const COMPONENT_INDEX: { name: string; title: string; category: ComponentCategory }[] = [
@@ -88,20 +90,23 @@ const NAV_LABEL: React.CSSProperties = {
 const HEADER_H = 56
 
 export default function App() {
-  const [active, setActive] = useState<NavSection>('Color')
+  const [active, setActive] = useState<NavSection>('overview')
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [search, setSearch] = useState('')
   const [pendingScroll, setPendingScroll] = useState<string | null>(null)
   const [activeComponent, setActiveComponent] = useState<string | null>(null)
 
-  const isComponent = COMPONENT_IDS.has(active)
-  const FoundationPage = !isComponent ? foundationPages[active as FoundationName] : null
+  const isGallery = active === 'gallery'
+  const isFoundationGallery = active === 'foundation'
+  const isComponent = COMPONENT_IDS.has(active) || isGallery
+  const isOverview = active === 'overview'
+  const FoundationPage =
+    !isComponent && !isOverview && !isFoundationGallery ? foundationPages[active as FoundationName] : null
 
   const handleNavClick = (id: NavSection) => {
     setActive(id)
     setActiveComponent(null)
     setDrawerOpen(false)
-    window.scrollTo(0, 0)
   }
 
   // 사이드바/검색/갤러리에서 컴포넌트 선택 → 해당 카테고리로 이동 후 컴포넌트로 스크롤
@@ -136,10 +141,9 @@ export default function App() {
 
   // 상단 우측 탭: 그룹 전환 시 해당 그룹의 첫 메뉴로 이동
   const handleTab = (tab: 'foundation' | 'components') => {
-    setActive(tab === 'foundation' ? 'Color' : 'form')
+    setActive(tab === 'foundation' ? 'foundation' : 'gallery')
     setActiveComponent(null)
     setDrawerOpen(false)
-    window.scrollTo(0, 0)
   }
 
   const tabButton = (label: string, isActive: boolean, onClick: () => void) => (
@@ -207,8 +211,8 @@ export default function App() {
           </svg>
         </button>
         <button
-          onClick={() => handleNavClick('Color')}
-          aria-label="처음으로 이동"
+          onClick={() => handleNavClick('overview')}
+          aria-label="개요로 이동"
           style={{ fontSize: 16, fontWeight: 600, color: '#1d1d1f', letterSpacing: '-0.3px', whiteSpace: 'nowrap', background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
         >
           WEHAGO 2.0<span className="hidden sm:inline"> Design System</span>
@@ -275,6 +279,7 @@ export default function App() {
                 <p style={{ ...NAV_LINK, color: '#8e8e93', cursor: 'default' }}>검색 결과가 없습니다</p>
               ) : (
                 <>
+                  {navButton('gallery', 'Overview')}
                   {componentItems.map((cat) => (
                     <div key={cat.id} style={{ marginTop: 16 }}>
                       <p style={NAV_LABEL}>{cat.label}</p>
@@ -301,7 +306,8 @@ export default function App() {
             </>
           ) : (
             <>
-              <p style={NAV_LABEL}>Foundation</p>
+              {navButton('foundation', 'Overview')}
+              <p style={{ ...NAV_LABEL, marginTop: 16 }}>Foundation</p>
               <div>{foundationNames.map((name) => navButton(name, name))}</div>
             </>
           )}
@@ -313,7 +319,13 @@ export default function App() {
 
       {/* ── Main content ── */}
       <main style={{ marginTop: HEADER_H }} className="md:ml-[220px] min-h-screen overflow-x-hidden">
-        {FoundationPage ? (
+        {isOverview ? (
+          <OverviewPage />
+        ) : isGallery ? (
+          <ComponentGallery onSelect={goToComponent} />
+        ) : isFoundationGallery ? (
+          <FoundationGallery onSelect={(name: FoundationKey) => handleNavClick(name)} />
+        ) : FoundationPage ? (
           <FoundationPage />
         ) : (
           <ComponentsSection category={active as ComponentCategory} />
